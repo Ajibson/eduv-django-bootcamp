@@ -9,3 +9,8 @@ def jobs(request):
 def job_details(request):
 
     return render(request, 'jobs/job_details.html')
+
+
+def new_job(request):
+
+    return render(request, 'jobs/job.html')

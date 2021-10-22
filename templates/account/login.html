@@ -6,6 +6,7 @@
 
 {% block content %}
 
+
 <div class="slider-area ">
     <div class="single-slider section-overly slider-height2 d-flex align-items-center" data-background="{% static 'assets/img/hero/about.jpg'%}">
         <div class="container">
@@ -35,8 +36,8 @@
                         <label for="last_name" class="form-label">Password</label>
                         <input type="password" class="form-control">
                     </div>
-                    <a class="text-right mb-3 text-info col-12" href="/password_reset.html">Forget Password?</a>
-                   
+                    <a class="text-right mb-3 text-info col-12" href="{% url 'account:password-reset' %}">Forget Password?</a>
+                    <input type="hidden" name="next" value="{{ next }}">
                     <button type="submit" class="form-control btn mb-3 rounded mx-3">Login</button>
                     <a class="text-left mb-3 text-info col-12" href="{% url 'account:signup' %}">New User?Register</a>
             </form>

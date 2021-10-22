@@ -22,6 +22,7 @@
             <link rel="stylesheet" href="{% static 'assets/css/slick.css'%}">
             <link rel="stylesheet" href="{% static 'assets/css/nice-select.css'%}">
             <link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
+            
    </head>
 
    <body>
@@ -261,6 +262,10 @@
 		<!-- Jquery Plugins, main Jquery -->	
         <script src="{% static 'assets/js/plugins.js'%}"></script>
         <script src="{% static 'assets/js/main.js'%}"></script>
+        {% block script %}
+
+
+        {% endblock script %}
         
     </body>
 </html>
