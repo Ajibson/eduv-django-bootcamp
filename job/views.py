@@ -1,3 +1,11 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def jobs(request):
+
+    return render(request, 'jobs/job_listing.html')
+
+
+def job_details(request):
+
+    return render(request, 'jobs/job_details.html')
