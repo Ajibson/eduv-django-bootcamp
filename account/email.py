@@ -5,17 +5,14 @@ from django.contrib.auth.tokens import default_token_generator
 from django.template.loader import render_to_string
 
 
-def send_confirnation_email(instance, user_status=None):
+def send_confirnation_email(instance):
     # Generate token and encode user primary key
     token = default_token_generator.make_token(instance)
     uid = urlsafe_base64_encode(force_bytes(instance.pk))
 
     # Send the email
     subject = "Account Acctivation"
-    if user_status == None:
-        url = f"http://localhost:8000/activate/{uid}/{token}"
-    else:
-        url = f"http://localhost:8000/activate/{user_status}/{uid}/{token}/"
+    url = f"http://localhost:8000/activate/{uid}/{token}"
     html_message = f"""<div style="margin: 5% 0%;">
 
             <h2>Welcome to Eduv Job Portal</h2>

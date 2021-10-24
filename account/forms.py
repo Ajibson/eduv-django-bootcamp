@@ -1,5 +1,5 @@
 from django import forms
-from .models import Account
+from .models import Account, job_seeker, recuiter
 
 
 class SignUpForm(forms.ModelForm):
@@ -55,3 +55,45 @@ class SignUpForm(forms.ModelForm):
 class LoginForm(forms.Form):
     email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput())
+
+
+class job_seekerForm(forms.ModelForm):
+
+    class Meta:
+        model = job_seeker
+        fields = ['title', 'image', 'gender',
+                  'resume', 'min_salary', "current_location", 'skills', 'bio', "availability"]
+
+    def __init__(self, *args, **kwargs):
+        super(job_seekerForm, self).__init__(*args, **kwargs)
+
+        for name, field in self.fields.items():
+            field.widget.attrs.update({'class': 'form-control'})
+
+        self.fields['skills'].widget.attrs.update(
+            {'placeholder': 'Comma separated skill', 'rows': 3})
+        self.fields['current_location'].widget.attrs.update(
+            {'placeholder': 'State and Country only'})
+        self.fields['bio'].widget.attrs.update(
+            {'placeholder': 'Summary your yourself', 'rows': 3})
+        self.fields['title'].widget.attrs.update(
+            {'placeholder': 'e.g Software Developer'})
+
+
+class CompanyForm(forms.ModelForm):
+
+    class Meta:
+        model = recuiter
+        fields = ['company_name', 'website',
+                  'current_location', 'logo', "email", 'employment_state', "description"]
+
+    def __init__(self, *args, **kwargs):
+        super(CompanyForm, self).__init__(*args, **kwargs)
+
+        for name, field in self.fields.items():
+            field.widget.attrs.update({'class': 'form-control'})
+
+        self.fields['description'].widget.attrs.update(
+            {'placeholder': 'Describe the company', 'rows': 3})
+        self.fields['current_location'].widget.attrs.update(
+            {'placeholder': 'State and Country only e.g Jigawa,Nigeria'})
