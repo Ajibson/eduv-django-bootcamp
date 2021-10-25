@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
-from account.models import Account, job_seeker, recuiter
-from .forms import SignUpForm, job_seekerForm, CompanyForm, LoginForm
+from account.models import Account, job_seeker, recuiter, passwordresetcode
+from .forms import SignUpForm, job_seekerForm, CompanyForm, LoginForm, NewPasswordResetForm
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.utils.encoding import force_text
@@ -15,9 +15,17 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse
+from django.utils import timezone
+
+
+from job.models import Category
 
 
 def index(request):
+    categories = Category.objects.all()
+    context = {
+        'categories': categories
+    }
     return render(request, "index.html")
 
 
@@ -84,6 +92,14 @@ def password_reset(request):
             associated_users = Account.objects.filter(Q(email=data))
             if associated_users.exists():
                 for user in associated_users:
+                    token = default_token_generator.make_token(user)
+                    password_token = passwordresetcode.objects.filter(
+                        user=user)
+                    password_token.delete()
+
+                    # Create new password reset token
+                    stored_token = passwordresetcode.objects.create(
+                        code=token, user=user)
                     subject = "Password Reset Link"
                     email_template_name = "account/password_reset_email.txt"
                     c = {
@@ -92,7 +108,7 @@ def password_reset(request):
                         'site_name': 'Eduv Job Portal',
                         "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                         "user": user,
-                        'token': default_token_generator.make_token(user),
+                        'token': token,
                         'protocol': 'http',
                     }
                     email = render_to_string(email_template_name, c)
@@ -104,6 +120,37 @@ def password_reset(request):
                     return render(request, 'account/email_sent.html')
     password_reset_form = PasswordResetForm()
     return render(request, 'account/password_reset.html', context={"password_reset_form": password_reset_form})
+
+
+def password_reset_confirm(request, uidb64, token):
+    user_pk = force_text(urlsafe_base64_decode(uidb64))
+    try:
+        user = Account.objects.get(pk=user_pk)
+        get_token = passwordresetcode.objects.get(code=token)
+        if request.method == 'POST':
+            form = NewPasswordResetForm(request.POST)
+            if form.is_valid():
+                get_token.delete()
+                password = form.cleaned_data['confirm_password']
+                user.set_password(password)
+                user.save()
+                messages.success(request, "Password set successfully")
+                return redirect('account:login')
+            else:
+                return render(request, 'account/password_confirm.html', {'form': form})
+        else:
+            date = timezone.now() - get_token.created_at
+            if date.seconds > 3600:  # 60 min set for link expiration
+                get_token.delete()
+                messages.error(request, "Reset link has expired")
+                return redirect('account:password-reset')
+            else:
+                form = NewPasswordResetForm()
+                return render(request, 'account/password_confirm.html', {'form': form})
+    except (Account.DoesNotExist, passwordresetcode.DoesNotExist):
+        messages.error(
+            request, "Reset link has been revoked, Kindly request for another")
+        return redirect('account:password-reset')
 
 
 def password_reset_complete(request):

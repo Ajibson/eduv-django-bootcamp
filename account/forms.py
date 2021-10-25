@@ -1,5 +1,6 @@
 from django import forms
 from .models import Account, job_seeker, recuiter
+from django.core.exceptions import ValidationError
 
 
 class SignUpForm(forms.ModelForm):
@@ -45,7 +46,7 @@ class SignUpForm(forms.ModelForm):
         if len(password) < 8:
             raise forms.ValidationError(
                 "Password should be min of 8 characters")
-        if not password.isalnum:
+        if password.isalpha() or password.isnumeric():
             raise forms.ValidationError(
                 "Password should contain both numbers and letters")
 
@@ -97,3 +98,27 @@ class CompanyForm(forms.ModelForm):
             {'placeholder': 'Describe the company', 'rows': 3})
         self.fields['current_location'].widget.attrs.update(
             {'placeholder': 'State and Country only e.g Jigawa,Nigeria'})
+
+
+class NewPasswordResetForm(forms.Form):
+    # password = forms.CharField(widget=forms.PasswordInput())
+    password = forms.CharField(label='Password', widget=forms.PasswordInput)
+    confirm_password = forms.CharField(
+        label='Password confirmation', widget=forms.PasswordInput)
+
+    def clean_confirm_password(self):
+        password = self.cleaned_data.get("password")
+        confirm_password = self.cleaned_data.get("confirm_password")
+
+        if password and confirm_password and password != confirm_password:
+            raise ValidationError("Passwords don't match")
+
+        # check password length
+        if len(confirm_password) < 8:
+            raise ValidationError("Password can't be less than 8 characters")
+        # check for number and letters is password
+        if confirm_password.isalpha() or confirm_password.isnumeric():
+            raise ValidationError(
+                "Password should contains both letters and numbers")
+
+        return confirm_password

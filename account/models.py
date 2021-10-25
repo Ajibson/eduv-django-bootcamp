@@ -6,6 +6,8 @@ from django.db.models.signals import post_save
 
 from .email import send_confirnation_email
 
+from django.utils import timezone
+
 
 class Account(AbstractUser):
     status_choices = (
@@ -66,9 +68,10 @@ class recuiter(models.Model):
     website = models.URLField(blank=True, default="http://")
     email = models.EmailField(blank=True)
     logo = models.ImageField(blank=True, upload_to="recuiter_company_logo")
+    cleared = models.BooleanField(default=False)
 
     def __str__(self) -> str:
-        return super().__str__()
+        return self.company_name
 
 
 @receiver(post_save, sender=Account)
@@ -81,3 +84,12 @@ def create_job_seeker_recuiter(sender, instance, created, **kwargs):
         new_recuiter = recuiter.objects.create(user=instance)
         # Send confirmation email with the link to update the profile
         send_email = send_confirnation_email(instance)
+
+
+class passwordresetcode(models.Model):
+    code = models.CharField(max_length=200)
+    created_at = models.DateTimeField(default=timezone.now)
+    user = models.ForeignKey(Account, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.code

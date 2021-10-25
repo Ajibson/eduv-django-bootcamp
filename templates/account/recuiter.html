@@ -26,12 +26,11 @@
                 {% csrf_token %}
                     <h2 class="col-12 my-3">Complete Your Profile</h2>
                     {% if messages %}
-                    <div class="alert alert-danger text-center alert-dismissible fade show" role="alert">
-                        {% for message in messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{message.tags}} text-center alert-dismissible fade show" role="alert">
                         {{message}}
-                        {% endfor %}
-                        
                     </div>
+                    {% endfor %}
                     {% endif %}
                 <div class="row  mx-md-auto ">
                     {% for entry in form %}
@@ -41,42 +40,7 @@
                         
                     </div>
                     {% endfor %}
-                    <!-- <div class="form-group col-md-6">
-                        <label for="first_name" class="form-label">Image</label>
-                        <input type="file" class="form-control">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <input type="text" class="form-control" name="skill" id="newSkill">
-                        <label for="first_name" class="form-label text-info text-center" id="btn-add" onclick="showmore()">Add Skills +</label>
-                        <ul id="skillList" class="list-unstyled list-inline"></ul>
-                    </div>
-                    <div class="form-group col-md-6 ">
-                        
-                        <input type="file" class="form-control">
-                        <label for="last_name" class="form-label">Upload Resume</label>
-                    </div>
-                
-                
                     
-                    
-                    <div class="form-group col-md-6 ">
-                        <label for="last_name" class="form-label">Min Salary</label>
-                        <input type="text" class="form-control" placeholder="e.g $500">
-                        
-                    </div>
-                
-                    
-                    <div class="form-group col-md-6">
-                        <label for="last_name" class="form-label">Current Location</label>
-                        <input type="text" class="form-control" placeholder="Hadejia, Jigawa State Nigeria">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="last_name" class="form-label">Available for Employment</label>
-                        <select class="form-control">
-                            <option>Yes</option>
-                            <option>No</option>
-                        </select>
-                    </div> -->
                     <button type="submit" class="form-control btn mb-3 rounded mx-3">Submit</button>
                 </div>
             </form>

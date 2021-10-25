@@ -133,3 +133,6 @@ EMAIL_HOST_USER = "admin@nubyira.com"
 EMAIL_HOST_PASSWORD = "mjkhnroozcnuigis"
 EMAIL_PORT = 587
 DEFAULT_FROM_MAIL = "admin@nubyira.com"
+
+
+LOGIN_URL = 'account:login'

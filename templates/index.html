@@ -20,12 +20,11 @@
                         <div class="col-xl-6 col-lg-9 col-md-10">
                             <div class="hero__caption">
                                 {% if messages %}
-                                <div class="alert alert-danger text-center alert-dismissible fade show" role="alert">
-                                    {% for message in messages %}
+                                {% for message in messages %}
+                                <div class="alert alert-{{message.tags}} text-center alert-dismissible fade show" role="alert">
                                     {{message}}
-                                    {% endfor %}
-                                    
                                 </div>
+                                {% endfor %}
                                 {% endif %}
                                 <h1>Find the most exciting startup jobs</h1>
                             </div>
@@ -124,6 +123,7 @@
                 </div>
             </div>
             <div class="row d-flex justify-contnet-center">
+                {% for entry in categories %}
                 <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
                     <div class="single-services text-center mb-30">
                         <div class="services-ion">
@@ -135,83 +135,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                    <div class="single-services text-center mb-30">
-                        <div class="services-ion">
-                            <span class="flaticon-cms"></span>
-                        </div>
-                        <div class="services-cap">
-                           <h5><a href="{% url 'jobs:jobs-listing' %}">Design & Development</a></h5>
-                            <span>(658)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                    <div class="single-services text-center mb-30">
-                        <div class="services-ion">
-                            <span class="flaticon-report"></span>
-                        </div>
-                        <div class="services-cap">
-                           <h5><a href="{% url 'jobs:jobs-listing' %}">Sales & Marketing</a></h5>
-                            <span>(658)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                    <div class="single-services text-center mb-30">
-                        <div class="services-ion">
-                            <span class="flaticon-app"></span>
-                        </div>
-                        <div class="services-cap">
-                           <h5><a href="{% url 'jobs:jobs-listing' %}">Mobile Application</a></h5>
-                            <span>(658)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                    <div class="single-services text-center mb-30">
-                        <div class="services-ion">
-                            <span class="flaticon-helmet"></span>
-                        </div>
-                        <div class="services-cap">
-                           <h5><a href="{% url 'jobs:jobs-listing' %}">Construction</a></h5>
-                            <span>(658)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                    <div class="single-services text-center mb-30">
-                        <div class="services-ion">
-                            <span class="flaticon-high-tech"></span>
-                        </div>
-                        <div class="services-cap">
-                           <h5><a href="{% url 'jobs:jobs-listing' %}">Information Technology</a></h5>
-                            <span>(658)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                    <div class="single-services text-center mb-30">
-                        <div class="services-ion">
-                            <span class="flaticon-real-estate"></span>
-                        </div>
-                        <div class="services-cap">
-                           <h5><a href="{% url 'jobs:jobs-listing' %}">Real Estate</a></h5>
-                            <span>(658)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                    <div class="single-services text-center mb-30">
-                        <div class="services-ion">
-                            <span class="flaticon-content"></span>
-                        </div>
-                        <div class="services-cap">
-                           <h5><a href="{% url 'jobs:jobs-listing' %}">Content Writer</a></h5>
-                            <span>(658)</span>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
             <!-- More Btn -->
             <!-- Section Button -->
@@ -226,6 +150,7 @@
     </div>
     <!-- Our Services End -->
     <!-- Online CV Area Start -->
+    {% if not user.is_authenticated %}
      <div class="online-cv cv-bg section-overly pt-90 pb-120"  data-background="{% static 'assets/img/gallery/cv_bg.jpg'%}">
         <div class="container">
             <div class="row justify-content-center">
@@ -233,15 +158,16 @@
                     <div class="cv-caption text-center">
                         <p class="pera1">FEATURED TOURS Packages</p>
                         <p class="pera2"> Make a Difference with Your Online Resume!</p>
-                        <a href="#" class="border-btn2 border-btn4">Upload your cv</a>
+                        <a href="#" class="border-btn2 border-btn4"> Upload your cv</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    {% endif %}
     <!-- Online CV Area End-->
     <!-- Featured_job_start -->
-    <section class="featured-job-area feature-padding">
+    <section class="featured-job-area {% if not user.is_authenticated %} feature-padding{% endif    %}">
         <div class="container">
             <!-- Section Tittle -->
             <div class="row">
@@ -418,7 +344,7 @@
                         <div class="support-caption">
                             <p class="pera-top">Mollit anim laborum duis au dolor in voluptate velit ess cillum dolore eu lore dsu quality mollit anim laborumuis au dolor in voluptate velit cillum.</p>
                             <p>Mollit anim laborum.Duis aute irufg dhjkolohr in re voluptate velit esscillumlore eu quife nrulla parihatur. Excghcepteur signjnt occa cupidatat non inulpadeserunt mollit aboru. temnthp incididbnt ut labore mollit anim laborum suis aute.</p>
-                            <a href="{% url 'jobs:new-job' %}" class="btn post-btn">Post a job</a>
+                            {% if user.status == 'recuiter' %}<a href="{% url 'jobs:new-job' %}" class="btn post-btn">Post a job</a>{% endif %}
                         </div>
                     </div>
                 </div>
