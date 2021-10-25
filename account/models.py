@@ -65,7 +65,7 @@ class recuiter(models.Model):
     current_location = models.CharField(max_length=300, blank=True)
     employment_state = models.CharField(
         max_length=100, blank=True, choices=employment_choice)
-    website = models.URLField(blank=True, default="http://")
+    website = models.URLField(blank=True, default="https://")
     email = models.EmailField(blank=True)
     logo = models.ImageField(blank=True, upload_to="recuiter_company_logo")
     cleared = models.BooleanField(default=False)

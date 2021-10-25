@@ -18,15 +18,22 @@ from django.http import HttpResponse
 from django.utils import timezone
 
 
-from job.models import Category
+from job.models import Category, Job
 
 
 def index(request):
     categories = Category.objects.all()
+    cat_dict = {}
+    for category in categories:
+        job_categories = Job.objects.filter(category=category.name)
+        cat_dict[category] = len(job_categories)
+    hot_jobs = Job.objects.all()[:3]
+    job_seekers = len(job_seeker.objects.all())
+    recuiters = len(recuiter.objects.all())
     context = {
-        'categories': categories
+        'cat_dict': cat_dict, "hot_jobs": hot_jobs, "job_seekers": job_seekers, "recuiters": recuiters
     }
-    return render(request, "index.html")
+    return render(request, "index.html", context)
 
 
 def about(request):
@@ -45,7 +52,8 @@ def signup(request):
             new_account = form.save(commit=False)
             new_account.set_password(form.cleaned_data.get("password"))
             new_account.save()
-            messages.success(request, "Registration Successfully")
+            messages.success(
+                request, "Registration Successfully, Head over to your email to verify your account")
             return redirect("account:index")
         else:
             return render(request, 'account/signup.html', {'form': form})
@@ -178,7 +186,8 @@ def account_confirmation(request, uidb64, token):
     else:
         # invalid link
         messages.error(request, "Invalid Link")
-        return render(request, 'account/signup.html')
+        form = SignUpForm()
+        return render(request, 'account/signup.html', {'form': form})
 
 
 def update_account(request):
@@ -193,6 +202,7 @@ def update_account(request):
                 request.POST, request.FILES, instance=instance)
         if form.is_valid():
             form.save()
+            messages.success("Account set up completed")
             return redirect("account:index")
         else:
             messages.error(request, f"Resume {form.errors['resume'][0]}")

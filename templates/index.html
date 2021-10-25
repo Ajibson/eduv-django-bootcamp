@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% load static%}
-
+{% load humanize %}
 {% block content %}
 
 
@@ -123,15 +123,15 @@
                 </div>
             </div>
             <div class="row d-flex justify-contnet-center">
-                {% for entry in categories %}
+                {% for name,number in cat_dict.items %}
                 <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
                     <div class="single-services text-center mb-30">
                         <div class="services-ion">
-                            <span class="flaticon-tour"></span>
+                            <span class="{{name.flaticon}}"></span>
                         </div>
                         <div class="services-cap">
-                           <h5><a href="{% url 'jobs:jobs-listing' %}">Design & Creative</a></h5>
-                            <span>(653)</span>
+                           <h5><a href="{% url 'jobs:jobs-listing' %}">{{name.name}}</a></h5>
+                            <span>({{number}})</span>
                         </div>
                     </div>
                 </div>
@@ -181,85 +181,27 @@
             <div class="row justify-content-center">
                 <div class="col-xl-10">
                     <!-- single-job-content -->
+                    {% for job in hot_jobs %}
                     <div class="single-job-items mb-30">
                         <div class="job-items">
                             <div class="company-img">
-                                <a href="{% url 'jobs:job-details' %}"><img src="{% static 'assets/img/icon/job-list1.png'%}" alt=""></a>
+                                <a href="{% url 'jobs:job-details'  job.posted_by.company_name job.job_slug  %}"><img src="{{job.posted_by.logo.url}}" alt=""></a>
                             </div>
                             <div class="job-tittle">
-                                <a href="{% url 'jobs:job-details' %}"><h4>Digital Marketer</h4></a>
+                                <a href="{% url 'jobs:job-details'  job.posted_by.company_name job.job_slug %}"><h4>{{job.title}}</h4></a>
                                 <ul>
-                                    <li>Creative Agency</li>
-                                    <li><i class="fas fa-map-marker-alt"></i>Athens, Greece</li>
-                                    <li>$3500 - $4000</li>
+                                    <li>{{job.posted_by}}</li>
+                                    <li><i class="fas fa-map-marker-alt"></i>{{job.posted_by.current_location}}</li>
+                                    <li>{{job.salary_range}}</li>
                                 </ul>
                             </div>
                         </div>
                         <div class="items-link f-right">
-                            <a href="{% url 'jobs:job-details' %}">Full Time</a>
-                            <span>7 hours ago</span>
+                            <a href="{% url 'jobs:job-details'  job.posted_by.company_name job.job_slug %}">{{job.job_nature}}</a>
+                            <span>{{job.date_created|naturaltime}}</span>
                         </div>
                     </div>
-                    <!-- single-job-content -->
-                    <div class="single-job-items mb-30">
-                        <div class="job-items">
-                            <div class="company-img">
-                                <a href="{% url 'jobs:job-details' %}"><img src="{% static 'assets/img/icon/job-list2.png'%}" alt=""></a>
-                            </div>
-                            <div class="job-tittle">
-                                <a href="{% url 'jobs:job-details' %}"><h4>Digital Marketer</h4></a>
-                                <ul>
-                                    <li>Creative Agency</li>
-                                    <li><i class="fas fa-map-marker-alt"></i>Athens, Greece</li>
-                                    <li>$3500 - $4000</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="items-link f-right">
-                            <a href="{% url 'jobs:job-details' %}">Full Time</a>
-                            <span>7 hours ago</span>
-                        </div>
-                    </div>
-                     <!-- single-job-content -->
-                    <div class="single-job-items mb-30">
-                        <div class="job-items">
-                            <div class="company-img">
-                                <a href="{% url 'jobs:job-details' %}"><img src="{% static 'assets/img/icon/job-list3.png'%}" alt=""></a>
-                            </div>
-                            <div class="job-tittle">
-                                <a href="{% url 'jobs:job-details' %}"><h4>Digital Marketer</h4></a>
-                                <ul>
-                                    <li>Creative Agency</li>
-                                    <li><i class="fas fa-map-marker-alt"></i>Athens, Greece</li>
-                                    <li>$3500 - $4000</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="items-link f-right">
-                            <a href="{% url 'jobs:job-details' %}">Full Time</a>
-                            <span>7 hours ago</span>
-                        </div>
-                    </div>
-                     <!-- single-job-content -->
-                    <div class="single-job-items mb-30">
-                        <div class="job-items">
-                            <div class="company-img">
-                                <a href="{% url 'jobs:job-details' %}"><img src="{% static 'assets/img/icon/job-list4.png'%}" alt=""></a>
-                            </div>
-                            <div class="job-tittle">
-                                <a href="{% url 'jobs:job-details' %}"><h4>Digital Marketer</h4></a>
-                                <ul>
-                                    <li>Creative Agency</li>
-                                    <li><i class="fas fa-map-marker-alt"></i>Athens, Greece</li>
-                                    <li>$3500 - $4000</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="items-link f-right">
-                            <a href="{% url 'jobs:job-details' %}">Full Time</a>
-                            <span>7 hours ago</span>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -339,10 +281,10 @@
                         <!-- Section Tittle -->
                         <div class="section-tittle section-tittle2">
                             <span>What we are doing</span>
-                            <h2>24k Talented people are getting Jobs</h2>
+                            <h2>{{job_seekers}} Talented person{{job_seekers|pluralize:'s'}} are getting Jobs from {{recuiters}} recuiter{{recuiters|pluralize:"s"}}</h2>
                         </div>
                         <div class="support-caption">
-                            <p class="pera-top">Mollit anim laborum duis au dolor in voluptate velit ess cillum dolore eu lore dsu quality mollit anim laborumuis au dolor in voluptate velit cillum.</p>
+                            <p class="pera-top">We are tested and trusted with the process of getting real deal jobs all over the world.</p>
                             <p>Mollit anim laborum.Duis aute irufg dhjkolohr in re voluptate velit esscillumlore eu quife nrulla parihatur. Excghcepteur signjnt occa cupidatat non inulpadeserunt mollit aboru. temnthp incididbnt ut labore mollit anim laborum suis aute.</p>
                             {% if user.status == 'recuiter' %}<a href="{% url 'jobs:new-job' %}" class="btn post-btn">Post a job</a>{% endif %}
                         </div>

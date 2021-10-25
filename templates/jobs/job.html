@@ -28,6 +28,14 @@
                 <form action="" method="POST" class="my-4 border rounded col-md-10 mx-md-auto">
                     {% csrf_token %}
                     <h2 class="col-12 my-3">Job Creation Form</h2>
+                    {% if form.errors %}
+                    <div class="alert alert-danger text-center alert-dismissible fade show" role="alert">
+                        {% for field,error in form.errors.items %}
+                        {{error}}
+                        {% endfor %}
+                        <!-- <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button> -->
+                    </div>
+                    {% endif %}
                 <div class="row  mx-md-auto ">
                     {% for entry in form %}
                     <div class="form-group col-md-6">

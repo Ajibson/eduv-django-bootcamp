@@ -58,7 +58,11 @@
                                     <nav class="d-none d-lg-block">
                                         <ul id="navigation">
                                             <li><a href="/">Home</a></li>
+                                            {% if user.status == 'job_seeker' %}
                                             <li><a href="{% url 'jobs:jobs-listing' %}">Find a Jobs </a></li>
+                                            {% else %}
+                                            <li><a href="{% url 'jobs:new-job' %}">Post Job</a></li>
+                                            {% endif %}
                                             <li><a href="{% url 'account:about' %}">About</a></li>
                                             <li><a href="{% url 'blog:blogs' %}">Blog</a></li>
                                             

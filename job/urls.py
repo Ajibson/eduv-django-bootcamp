@@ -5,6 +5,6 @@ app_name = "jobs"
 
 urlpatterns = [
     path("", jobs, name="jobs-listing"),
-    path('job-details/', job_details, name = "job-details"),
-    path("new-job/", new_job, name = "new-job" )
+    path('<str:company>/<str:job_slug>', job_details, name="job-details"),
+    path("new-job/", new_job, name="new-job")
 ]

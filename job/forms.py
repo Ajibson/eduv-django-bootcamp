@@ -16,6 +16,8 @@ class JobForm(forms.ModelForm):
 
         self.fields['Knowledge_skills_abilities'].widget.attrs.update(
             {'rows': 4})
+        self.fields['job_description'].widget.attrs.update(
+            {'rows': 4})
         self.fields['education_experience'].widget.attrs.update(
             {'rows': 4})
         self.fields['application_deadline'].widget.attrs.update(
