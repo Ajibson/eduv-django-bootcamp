@@ -5,23 +5,33 @@ from django.contrib.auth.decorators import login_required
 from .models import Category, Job
 from account.models import recuiter
 from django.http import JsonResponse
-from django.core.paginator import Paginator, EmptyPage
+from django.core.paginator import Paginator
+from django.core import serializers
+
+
+def page_job(request, category=None):
+    if category == None:
+        # Get the list to paginate
+        available_jobs = Job.objects.order_by("-date_created")
+    else:
+        available_jobs = Job.objects.filter(
+            category=category).order_by("-date_created")
+    paginator = Paginator(available_jobs, 2)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+    categories = Category.objects.all()
+    return available_jobs, categories, page_obj
 
 
 def jobs(request):
     if request.method == "POST":
         gotten_category = request.POST.get('selected_category')
-        data = {}
-        new_data = Job.objects.filter(category=gotten_category).values()
-        # data['response'] = new_data.values()
-        # print(data)
-        return JsonResponse({"response": list(new_data)})
-    # Get the list tto paginate
-    available_jobs = Job.objects.order_by("-date_created")
-    paginator = Paginator(available_jobs, 2)
-    page_number = request.GET.get('page', 1)
-    page_obj = paginator.get_page(page_number)
-    categories = Category.objects.all()
+        available_jobs, categories, page_obj = page_job(
+            request, category=gotten_category)
+        print(list(page_obj.object_list), type(list(page_obj.object_list)))
+        return JsonResponse({"page_obj": list(page_obj.object_list), "jobs_found": len(
+            available_jobs), "categories": categories}, safe=False)
+    available_jobs, categories, page_obj = page_job(request)
     context = {"page_obj": page_obj, "jobs_found": len(
         available_jobs), "categories": categories}
     return render(request, 'jobs/job_listing.html', context)
