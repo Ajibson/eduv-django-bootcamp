@@ -4,11 +4,18 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import Category, Job
 from account.models import recuiter
-
+from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage
 
 
 def jobs(request):
+    if request.method == "POST":
+        gotten_category = request.POST.get('selected_category')
+        data = {}
+        new_data = Job.objects.filter(category=gotten_category).values()
+        # data['response'] = new_data.values()
+        # print(data)
+        return JsonResponse({"response": list(new_data)})
     # Get the list tto paginate
     available_jobs = Job.objects.order_by("-date_created")
     paginator = Paginator(available_jobs, 2)
@@ -24,8 +31,9 @@ def job_details(request, job_slug, company):
     posted_by = recuiter.objects.filter(company_name=company).first()
     the_job = Job.objects.filter(
         job_slug=job_slug, posted_by=posted_by).first()
-    knowledge_skill = the_job.Knowledge_skills_abilities.split(',').remove("")
-    education_experience = the_job.education_experience.split(',').remove("")
+    knowledge_skill = the_job.Knowledge_skills_abilities.split(',')
+
+    education_experience = the_job.education_experience.split(',')
 
     context = {
         'the_job': the_job, "posted_by": posted_by, "knowledge_skill": knowledge_skill,

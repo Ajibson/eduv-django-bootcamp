@@ -65,10 +65,16 @@
                             </div>
                            <ul>
                                {% for entry in knowledge_skill %}
-                               <li>{{entry}}</li>
+                               {% if entry == '' %}
+                                <li>None</li>
+                                {% else %}
+                                <li>{{entry}}</li>
+                                {% endif %}
                                {% endfor %}
                            </ul>
                         </div>
+                        
+
                         {% endif %}
                         {% if education_experience %}
                         <div class="post-details2  mb-50">
@@ -78,7 +84,11 @@
                             </div>
                            <ul>
                                 {% for entry in education_experience %}
+                                {% if entry == '' %}
+                                <li>None</li>
+                                {% else %}
                                 <li>{{entry}}</li>
+                                {% endif %}
                                 {% endfor %}
                            </ul>
                         </div>
@@ -102,7 +112,7 @@
                           <li>Application date : <span>{{the_job.application_deadline}}</span></li>
                       </ul>
                      <div class="apply-btn2">
-                        <a href="{% if the_job.application_link %}{{the_job.application_link}} {% else %} mailto:{{the_job.application_email}} {% endif %}" class="btn">Apply Now</a>
+                        <a target="_blank" href="{% if the_job.application_link %}{{the_job.application_link}} {% else %} mailto:{{the_job.application_email}} {% endif %}" class="btn">Apply Now</a>
                      </div>
                    </div>
                     <div class="post-details4  mb-50">

@@ -54,10 +54,10 @@
                            </div>
                             <!-- Select job items start -->
                             <div class="select-job-items2">
-                                <select name="select">
+                                <select name="select" onchange="find_jobs()" id="job_category">
                                     <option value="">All Category</option>
                                     {% for category in categories %}
-                                    <option value="">{{category}}</option>
+                                    <option value="{{category}}">{{category}}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -86,6 +86,7 @@
                            </div>
                             <!-- Select job items start -->
                             <div class="select-job-items2">
+                                {% csrf_token %}
                                 <input type="text" class="form-control">
                                 <button type="submit" class="form-control mt-2 bg-info text-white"> Search </button>
                             </div>
@@ -259,3 +260,28 @@
 </main>
 
 {% endblock content %}
+
+{% block script %}
+
+<script>
+   function find_jobs(){
+       let cat_value = document.querySelector("#job_category").value;
+       console.log(cat_value);
+
+       $.ajax({
+           type:"POST",
+           url : "{% url 'jobs:jobs-listing' %}",
+           data: {
+                "selected_category":cat_value,
+               csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+           },
+           success: function(data){
+                console.log(data)
+           }
+       })
+    
+};
+</script>
+
+
+{% endblock script%}

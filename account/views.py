@@ -27,7 +27,7 @@ def index(request):
     for category in categories:
         job_categories = Job.objects.filter(category=category.name)
         cat_dict[category] = len(job_categories)
-    hot_jobs = Job.objects.all()[:3]
+    hot_jobs = Job.objects.order_by("-date_created")[:3]
     job_seekers = len(job_seeker.objects.all())
     recuiters = len(recuiter.objects.all())
     context = {
@@ -79,7 +79,7 @@ def Login(request):
                 return redirect('account:login')
             else:
                 messages.error(request, "Wrong credentials supplied")
-                return redirect("account:login")
+                return render(request, 'account/login.html')
         else:
             messages.error(request, "what are you putting in the form 😎")
             return redirect("account:login")
