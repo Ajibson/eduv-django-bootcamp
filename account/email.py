@@ -12,7 +12,7 @@ def send_confirnation_email(instance):
 
     # Send the email
     subject = "Account Acctivation"
-    url = f"http://eduvjobs.herokuapp.com/activate/{uid}/{token}"
+    url = f"http://eduvjobs.herokuapp.com/activate/{uid}/{token}?status=new"
     html_message = f"""<div style="margin: 5% 0%;">
 
             <h2>Welcome to Eduv Job Portal</h2>

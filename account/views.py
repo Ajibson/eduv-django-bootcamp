@@ -205,8 +205,9 @@ def update_account(request):
                 request.POST, request.FILES, instance=instance)
         if form.is_valid():
             form.save()
-            send_message = new_recuiter(
-                recuiter.objects.filter(user=request.user).first())
+            if request.GET.get("status") != None:
+                send_message = new_recuiter(
+                    recuiter.objects.filter(user=request.user).first())
             messages.success(request, "Account Updated Successfully")
             return redirect("account:index")
         else:
