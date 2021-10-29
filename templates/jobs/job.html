@@ -45,7 +45,7 @@
                     </div>
                     {% endfor %}
                     
-                    <button type="submit" class="form-control btn mb-3 rounded mx-3">Submit</button>
+                    <button type="submit" class="form-control btn mb-3 rounded mx-3" id="sub" onclick="changeText()">Submit</button>
                     <!-- <small></small>
                         <small>$500 - $900</small>
                         <small></small> -->
@@ -61,5 +61,9 @@
 
 {% block script %}
 
-
+<script>
+    function changeText(){
+        document.getElementById("sub").innerHTML="Processing......"
+    }
+</script>
 {% endblock script %}

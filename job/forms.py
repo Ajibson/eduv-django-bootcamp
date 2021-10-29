@@ -6,7 +6,7 @@ class JobForm(forms.ModelForm):
 
     class Meta:
         model = Job
-        exclude = ['date_created']
+        exclude = ['date_created', "posted_by", "job_slug", "confirmed"]
 
     def __init__(self, *args, **kwargs):
         super(JobForm, self).__init__(*args, **kwargs)

@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 from django.core import serializers
 from django.template.loader import render_to_string
 from django.db.models import Q
+from .email import jobmail
 
 
 def get_job(gotten_category=None, job_nature=None, minamount=None, maxamount=None):
@@ -17,7 +18,7 @@ def get_job(gotten_category=None, job_nature=None, minamount=None, maxamount=Non
     if gotten_category != None and job_nature and minamount != None and maxamount != None:
         for word in job_nature:
             query = query | Q(job_nature=word) & Q(
-                category=gotten_category) & Q(salary_range__gte=minamount) & Q(salary_range__lte=maxamount)
+                category=gotten_category) & Q(salary_range__gte=minamount) & Q(salary_range__lte=maxamount) & Q(confirmed=True)
         available_jobs = Job.objects.filter(
             query).distinct().order_by("-date_created")
 
@@ -25,7 +26,7 @@ def get_job(gotten_category=None, job_nature=None, minamount=None, maxamount=Non
     elif gotten_category != None and job_nature:
         for word in job_nature:
             query = query | Q(job_nature=word) & Q(
-                category=gotten_category)
+                category=gotten_category) & Q(confirmed=True)
         available_jobs = Job.objects.filter(
             query).distinct().order_by("-date_created")
     # If price and either category or job_ature seen
@@ -33,33 +34,34 @@ def get_job(gotten_category=None, job_nature=None, minamount=None, maxamount=Non
         # price with category
         if gotten_category != None:
             query = query | Q(
-                category=gotten_category) & Q(salary_range__gte=minamount) & Q(salary_range__lte=maxamount)
+                category=gotten_category) & Q(salary_range__gte=minamount) & Q(salary_range__lte=maxamount) & Q(confirmed=True)
             available_jobs = Job.objects.filter(
                 query).distinct().order_by("-date_created")
         # price with job_nature
         else:
             for word in job_nature:
                 query = query | Q(job_nature=word) & Q(
-                    salary_range__gte=minamount) & Q(salary_range__lte=maxamount)
+                    salary_range__gte=minamount) & Q(salary_range__lte=maxamount) & Q(confirmed=True)
             available_jobs = Job.objects.filter(
                 query).distinct().order_by("-date_created")
     # category alone
     elif gotten_category != None:
         available_jobs = Job.objects.filter(
-            category=gotten_category).order_by("-date_created")
+            category=gotten_category, confirmed=True).order_by("-date_created")
     # job_nature alone
     elif job_nature:
         for word in job_nature:
-            query = query | Q(job_nature=word)
+            query = query | Q(job_nature=word) & Q(confirmed=True)
         available_jobs = Job.objects.filter(
             query).distinct().order_by("-date_created")
     elif minamount != None and maxamount != None:
         query = query | Q(salary_range__gte=minamount) & Q(
-            salary_range__lte=maxamount)
+            salary_range__lte=maxamount) & Q(confirmed=True)
         available_jobs = Job.objects.filter(
             query).distinct().order_by("-date_created")
     else:
-        available_jobs = Job.objects.order_by("-date_created")
+        available_jobs = Job.objects.filter(
+            confirmed=True).order_by("-date_created")
     return available_jobs
 
 
@@ -84,7 +86,8 @@ def job_filter(request):
 
 
 def jobs(request):
-    available_jobs = Job.objects.order_by("-date_created")
+    available_jobs = Job.objects.filter(
+        confirmed=True).order_by("-date_created")
     paginator = Paginator(available_jobs, 2)
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
@@ -123,11 +126,42 @@ def new_job(request):
         if request.method == 'POST':
             form = JobForm(request.POST)
             if form.is_valid():
-                form.save()
-                messages.success(request, "Job posted successfully")
+                new_job = form.save(commit=False)
+                new_job.posted_by = recuiter.objects.get(user=request.user)
+                new_job.save()
+                messages.success(
+                    request, "Job sent for verification successfully, Please don't send the same job twice")
+                send_message = jobmail(new_job)
                 return redirect("account:index")
             else:
                 return render(request, 'jobs/job.html', {"form": form, "categories": categories})
 
         form = JobForm()
         return render(request, 'jobs/job.html', {"form": form, "categories": categories})
+
+
+def activate_job(request):
+    title = request.GET.get("title")
+    recuiter = request.GET.get("recuiter")
+    job = Job.objects.filter(title=title, posted_by=recuiter).first()
+    if job:
+        job.confirmed = True
+        job.save()
+        messages.success(request, "Job cleared successfully")
+        return redirect("account:index")
+    else:
+        messages.error(request, "Job not cleared")
+        return redirect("account:index")
+
+
+def delete(request):
+    title = request.GET.get("title")
+    recuiter = request.GET.get("recuiter")
+    job = Job.objects.filter(title=title, posted_by=recuiter).first()
+    if job:
+        job.delete()
+        messages.success(request, "Job deleted successfully")
+        return redirect("account:index")
+    else:
+        messages.error(request, "Job not found")
+        return redirect("account:index")
