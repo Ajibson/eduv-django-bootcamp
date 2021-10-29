@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import FileExtensionValidator
 from django.dispatch import receiver
 from django.db.models.signals import post_save
-
+from cloudinary_storage.storage import RawMediaCloudinaryStorage
 from .email import send_confirnation_email
 
 from django.utils import timezone
@@ -40,7 +40,7 @@ class job_seeker(models.Model):
     title = models.CharField(max_length=500, blank=True)
     min_salary = models.PositiveIntegerField(default=0)
     current_location = models.CharField(max_length=500, blank=True)
-    resume = models.FileField(blank=True, upload_to="job_seeker_resume", validators=[
+    resume = models.FileField(blank=True, upload_to="job_seeker_resume", storage=RawMediaCloudinaryStorage(), validators=[
                               FileExtensionValidator(allowed_extensions=['pdf'])])
     image = models.ImageField(blank=True, upload_to="profile_image")
     skills = models.TextField(blank=True, help_text="comma separated skills")
