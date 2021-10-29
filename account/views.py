@@ -194,6 +194,7 @@ def account_confirmation(request, uidb64, token):
 
 @login_required()
 def update_account(request):
+    status = request.GET.get("status")
     if request.method == 'POST':
         if request.user.status == "job_seeker":
             instance = job_seeker.objects.filter(user=request.user).first()
@@ -205,7 +206,7 @@ def update_account(request):
                 request.POST, request.FILES, instance=instance)
         if form.is_valid():
             form.save()
-            if request.GET.get("status") != None:
+            if status == "new":
                 send_message = new_recuiter(
                     recuiter.objects.filter(user=request.user).first())
             messages.success(request, "Account Updated Successfully")
