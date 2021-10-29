@@ -2,8 +2,24 @@
 {% load static %}
 
 {% block title %}<title>Eduv Job Portal | Login</title> {% endblock title %}
-
+{% block css %}
+<style>
+    a{
+        color:blue;
+    }
+    a:hover{
+        color:black
+    }
+    #image-clear_id, #resume-clear_id,label[for=resume-clear_id], label[for=image-clear_id]{
+        display:none
+    }
+    
+    </style>
+{% endblock css %}
 {% block content %}
+
+
+
 
 <div class="slider-area ">
     <div class="single-slider section-overly slider-height2 d-flex align-items-center" data-background="{% static 'assets/img/hero/about.jpg'%}">
@@ -26,7 +42,7 @@
                 <form action="{% url 'account:update-account' %}" method="POST" enctype="multipart/form-data" 
                 class="my-4 border rounded col-md-10 mx-md-auto">
                 {% csrf_token %}
-                    <h2 class="col-12 my-3">Complete Your Profile</h2>
+                    <h2 class="col-12 my-3">Update Your Profile</h2>
                     {% if messages %}
                     {% for message in messages %}
                     <div class="alert alert-{{message.tags}} text-center alert-dismissible fade show" role="alert">

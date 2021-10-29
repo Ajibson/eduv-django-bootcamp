@@ -1,0 +1,29 @@
+{% load humanize %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="count-job mb-35">
+            <span><strong id="job-number">{{jobs_found|intcomma}}</strong> Jobs found</span>
+        </div>
+    </div>
+</div>
+{% for job in page_obj %}
+<div class="single-job-items mb-5">
+    <div class="job-items">
+        <div class="company-img">
+            <a href="{% url 'jobs:job-details'  job.posted_by.company_name job.job_slug  %}"><img src="{{job.posted_by.logo.url}}" alt=""></a>
+        </div>
+        <div class="job-tittle">
+            <a href="{% url 'jobs:job-details'  job.posted_by.company_name job.job_slug %}"><h4>{{job.title}}</h4></a>
+            <ul>
+                <li>{{job.posted_by}}</li>
+                <li><i class="fas fa-map-marker-alt"></i>{{job.posted_by.current_location}}</li>
+                <li>{{job.salary_range}}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="items-link f-right">
+        <a href="{% url 'jobs:job-details'  job.posted_by.company_name job.job_slug %}">{{job.job_nature}}</a>
+        <span>{{job.date_created|naturaltime}}</span>
+    </div>
+</div>
+{% endfor %}

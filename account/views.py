@@ -16,6 +16,7 @@ from django.utils.encoding import force_bytes
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
 
 from job.models import Category, Job
@@ -190,6 +191,7 @@ def account_confirmation(request, uidb64, token):
         return render(request, 'account/signup.html', {'form': form})
 
 
+@login_required()
 def update_account(request):
     if request.method == 'POST':
         if request.user.status == "job_seeker":
@@ -202,8 +204,16 @@ def update_account(request):
                 request.POST, request.FILES, instance=instance)
         if form.is_valid():
             form.save()
-            messages.success("Account set up completed")
+            messages.success(request, "Account Updated Successfully")
             return redirect("account:index")
         else:
             messages.error(request, f"Resume {form.errors['resume'][0]}")
             return redirect(request.META.get('HTTP_REFERER', '/'))
+    if request.user.status == "job_seeker":
+        instance = job_seeker.objects.filter(user=request.user).first()
+        form = job_seekerForm(instance=instance)
+        return render(request, 'account/job_seeker.html', {"form": form})
+    else:
+        instance = recuiter.objects.filter(user=request.user).first()
+        form = CompanyForm(instance=instance)
+        return render(request, 'account/recuiter.html', {"form": form})

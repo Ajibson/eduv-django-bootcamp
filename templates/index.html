@@ -33,8 +33,10 @@
                     <!-- Search Box -->
                     <div class="row">
                         <div class="col-xl-8">
-                            <!-- form -->
-                            <form action="#" class="search-box">
+                            <div class="btn col-xl-8">
+                                <a href="#">Start Here For Free</a>
+                            </div>	
+                            <!-- <form action="#" class="search-box">
                                 <div class="input-form">
                                     <input type="text" placeholder="Job Tittle or keyword">
                                 </div>
@@ -48,10 +50,8 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="search-form">
-                                    <a href="#">Find job</a>
-                                </div>	
-                            </form>	
+                                
+                            </form>	 -->
                         </div>
                     </div>
                 </div>
@@ -66,7 +66,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-tittle white-text text-center">
-                        <span>Apply process</span>
+
                         <h2> How it works</h2>
                     </div>
                 </div>
@@ -158,7 +158,7 @@
                     <div class="cv-caption text-center">
                         <p class="pera1">FEATURED TOURS Packages</p>
                         <p class="pera2"> Make a Difference with Your Online Resume!</p>
-                        <a href="#" class="border-btn2 border-btn4"> Upload your cv</a>
+                        <a href="{% url 'account:update-account'%}" class="border-btn2 border-btn4"> Upload your cv</a>
                     </div>
                 </div>
             </div>
@@ -202,6 +202,13 @@
                         </div>
                     </div>
                     {% endfor %}
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="browse-btn2 text-center mt-50">
+                            <a href="{% url 'jobs:jobs-listing' %}" class="border-btn2">Browse All Jobs</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -62,7 +62,7 @@ class job_seekerForm(forms.ModelForm):
 
     class Meta:
         model = job_seeker
-        fields = ['title', 'image', 'gender',
+        fields = ['title', 'gender', 'image',
                   'resume', 'min_salary', "current_location", 'skills', 'bio', "availability"]
 
     def __init__(self, *args, **kwargs):

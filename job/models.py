@@ -22,6 +22,11 @@ class CategoryOption(models.TextChoices):
     Others = "Others", "Others"
 
 
+class JobNatureOption(models.TextChoices):
+    Full_Time = "Full Time", "Full Time"
+    Part_Time = "Part Time", "Part Time"
+
+
 class Job(models.Model):
     job_nature_choices = (
         ("Part Time", "Part Time"), ("Full Time", "Full Time")
@@ -31,11 +36,11 @@ class Job(models.Model):
     title = models.CharField(max_length=255)
     category = models.CharField(
         max_length=255, choices=CategoryOption.choices, default=CategoryOption.Web_Developement)
-    job_nature = models.CharField(max_length=25, choices=job_nature_choices)
+    job_nature = models.CharField(
+        max_length=25, choices=JobNatureOption.choices)
     application_link = models.URLField(default="https://", blank=True)
     application_email = models.EmailField(blank=True)
-    salary_range = models.CharField(
-        max_length=200, help_text="e.g $500 - $900")
+    salary_range = models.PositiveIntegerField()
     application_deadline = models.DateField(blank=True, help_text="yyyy-mm-dd")
     slot_available = models.PositiveIntegerField(default=1)
     job_description = models.TextField(blank=True)
@@ -45,6 +50,7 @@ class Job(models.Model):
         blank=True, help_text='End each input with comma e.g 3 or more years of professional design experience,Direct response email experience')
     date_created = models.DateTimeField(default=timezone.now)
     job_slug = models.SlugField(blank=True, null=True)
+    confirmed = models.BooleanField()
 
     def __str__(self):
         return self.title

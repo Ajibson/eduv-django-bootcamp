@@ -63,62 +63,26 @@
                             </div>
                             <!--  Select job items End-->
                             <!-- select-Categories start -->
-                            <div class="select-Categories pt-80 pb-50">
+                            <div class="select-Categories pt-80 pb-50" id="checkboxdiv">
                                 <div class="small-section-tittle2">
                                     <h4>Job Type</h4>
                                 </div>
-                                <label class="container">Full Time
-                                    <input type="checkbox" >
+                                
+                                {% for nature in job_nature %}
+                                <label class="container">{{nature.0}}
+                                    <input type="checkbox" value="{{nature.1}}" onchange="find_jobs()">
                                     <span class="checkmark"></span>
                                 </label>
-                                <label class="container">Part Time
-                                    <input type="checkbox" >
-                                    <span class="checkmark"></span>
-                                </label>
+                                {% endfor %}
                                 
                             </div>
                             <!-- select-Categories End -->
                         </div>
-                        <!-- single two -->
-                        <div class="single-listing">
-                           <div class="small-section-tittle2">
-                                 <h4>Job Location</h4>
-                           </div>
-                            <!-- Select job items start -->
-                            <div class="select-job-items2">
-                                {% csrf_token %}
-                                <input type="text" class="form-control">
-                                <button type="submit" class="form-control mt-2 bg-info text-white"> Search </button>
-                            </div>
-                            <!--  Select job items End-->
-                            <!-- select-Categories start -->
-                            <div class="select-Categories pt-80 pb-50">
-                                <div class="small-section-tittle2">
-                                    <h4>Experience</h4>
-                                </div>
-                                <label class="container">1-2 Years
-                                    <input type="checkbox" >
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="container">2-3 Years
-                                    <input type="checkbox" checked="checked active">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="container">3-6 Years
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="container">6-more..
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <!-- select-Categories End -->
-                        </div>
+                        
                         <!-- single three -->
-                        <div class="single-listing">
+                        <!-- <div class="single-listing"> -->
                             <!-- select-Categories start -->
-                            <div class="select-Categories pb-50">
+                            <!-- <div class="select-Categories pb-50">
                                 <div class="small-section-tittle2">
                                     <h4>Posted Within</h4>
                                 </div>
@@ -146,9 +110,9 @@
                                     <input type="checkbox">
                                     <span class="checkmark"></span>
                                 </label>
-                            </div>
+                            </div> -->
                             <!-- select-Categories End -->
-                        </div>
+                        <!-- </div> -->
                         <div class="single-listing">
                             <!-- Range Slider Start -->
                             <aside class="left_widgets p_filter_widgets price_rangs_aside sidebar_box_shadow">
@@ -164,11 +128,14 @@
                                                 <p>Price :</p>
                                             </div>
                                             <div class="price_value d-flex justify-content-center">
-                                                <input type="text" class="js-input-from" id="amount" readonly />
+                                                <input type="text" class="js-input-from" id="Minamount"  />
                                                 <span>to</span>
-                                                <input type="text" class="js-input-to" id="amount" readonly />
+                                                <input type="text" class="js-input-to" id="Maxamount"  />
+                                                
                                             </div>
+                                            
                                         </div>
+                                        <button class="btn btn-primary form-control" onclick="find_jobs()">Price  Filter</button>
                                     </div>
                                 </div>
                             </aside>
@@ -183,26 +150,17 @@
                     <section class="featured-job-area">
                         <div class="container">
                             <!-- Count of Job list Start -->
+                            <div id="job_box">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="count-job mb-35">
-                                        <span>{{jobs_found|intcomma}} Jobs found</span>
-                                        <!-- Select job items start -->
-                                        <div class="select-job-items">
-                                            <span>Sort by</span>
-                                            <select name="select">
-                                                <option value="">None</option>
-                                                <option value="">job list</option>
-                                                <option value="">job list</option>
-                                                <option value="">job list</option>
-                                            </select>
-                                        </div>
-                                        <!--  Select job items End-->
+                                        <span><strong id="job-number">{{jobs_found|intcomma}}</strong> Jobs found</span>
                                     </div>
                                 </div>
                             </div>
                             <!-- Count of Job list End -->
                             <!-- single-job-content -->
+                            
                             {% for job in page_obj %}
                             <div class="single-job-items mb-5">
                                 <div class="job-items">
@@ -214,7 +172,7 @@
                                         <ul>
                                             <li>{{job.posted_by}}</li>
                                             <li><i class="fas fa-map-marker-alt"></i>{{job.posted_by.current_location}}</li>
-                                            <li>{{job.salary_range}}</li>
+                                            <li>${{job.salary_range}}</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -225,37 +183,41 @@
                             </div>
                             {% endfor %}
                         </div>
+                        </div>
                     </section>
                     <!-- Featured_job_end -->
+                    <!--Pagination Start  -->
+                        <div class="pagination-area pb-115 text-center">
+                            <div class="container">
+                                <div class="row" >
+                                    <div class="col-xl-12" >
+                                        <div class="single-wrap d-flex justify-content-center" id="pagination-area">
+                                            <nav aria-label="Page navigation example">
+                                                <ul class="pagination justify-content-start">
+                                                    {% if page_obj.has_previous %}
+                                                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number}}"><span class="ti-angle-left"></span></a></li>
+                                                    {% endif %}
+                                                    <li class="page-item active mx-3"><a class="page-link" href="#">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</a></li>
+                                                    {% if page_obj.has_next %}
+                                                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}"><span class="ti-angle-right"></span></a></li>
+                                                    {% endif %}
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!--Pagination End  -->
                 </div>
+                
             </div>
         </div>
     </div>
+    {% csrf_token %}
     <!-- Job List Area End -->
-    <!--Pagination Start  -->
-    <div class="pagination-area pb-115 text-center">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="single-wrap d-flex justify-content-center">
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination justify-content-start">
-                                {% if page_obj.has_previous %}
-                                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number}}"><span class="ti-angle-left"></span></a></li>
-                                {% endif %}
-                                <li class="page-item active mx-3"><a class="page-link" href="#">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</a></li>
-                                {% if page_obj.has_next %}
-                                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}"><span class="ti-angle-right"></span></a></li>
-                                {% endif %}
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     
-    <!--Pagination End  -->
     
 </main>
 
@@ -264,22 +226,46 @@
 {% block script %}
 
 <script>
-   function find_jobs(){
+   function find_jobs(page_number){
        let cat_value = document.querySelector("#job_category").value;
-
+       let job_number = document.querySelector("#job-number")
+       let selected_values = []; // Create an empty array
+       let checkbox = document.getElementById('checkboxdiv'); //Get the checkbox parent div
+       let selchk = checkbox.getElementsByTagName("input"); // Get the checkbox input tags in the parent tag
+       for(i = 0; i<selchk.length; i++){
+           if(selchk[i].checked){
+            selected_values.push(selchk[i].value)
+           }
+       }
+       let Minamount = document.getElementById("Minamount").value;
+       let maxamount = document.getElementById("Maxamount").value;
+       
        $.ajax({
            type:"POST",
-           url : "{% url 'jobs:jobs-listing' %}",
+           url : "{% url 'jobs:job_filter' %}",
            data: {
                 "selected_category":cat_value,
-               csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+                "page":page_number,
+                "job_nature":selected_values,
+                "minamount":Minamount,
+                "maxamount":maxamount,
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+           },
+           beforeSend: function(){
+            $("#job_box").html("Fetching Data ........")
            },
            success: function(data){
-                console.log(data)
+            $("#job_box").html(data['jobs'])
+            $("#pagination-area").html(data['pagination']);
+            var el = document.getElementById('job-number');
+            el.scrollIntoView(true);
            }
        })
     
 };
+
+
+
 </script>
 
 
