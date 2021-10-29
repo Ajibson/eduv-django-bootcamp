@@ -17,6 +17,7 @@ from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from .email import new_recuiter
 
 
 from job.models import Category, Job
@@ -204,6 +205,8 @@ def update_account(request):
                 request.POST, request.FILES, instance=instance)
         if form.is_valid():
             form.save()
+            send_message = new_recuiter(
+                recuiter.objects.filter(user=request.user).first())
             messages.success(request, "Account Updated Successfully")
             return redirect("account:index")
         else:
@@ -217,3 +220,16 @@ def update_account(request):
         instance = recuiter.objects.filter(user=request.user).first()
         form = CompanyForm(instance=instance)
         return render(request, 'account/recuiter.html', {"form": form})
+
+
+def clear_recuiter(request):
+    pk = request.GET.get("pk")
+    recuiter_to_clear = recuiter.objects.filter(pk=pk).first()
+    if recuiter_to_clear:
+        recuiter_to_clear.cleared = True
+        recuiter_to_clear.save()
+        messages.success(request, "Recuiter cleared successfully")
+        return redirect("account:index")
+    else:
+        messages.error(request, "Recuiter not Found")
+        return redirect("account:index")

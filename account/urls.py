@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import (index, about, contact, signup, Login, Logout, password_reset_complete,password_reset_confirm,
-                    password_reset, account_confirmation, update_account)
+                    password_reset, account_confirmation, update_account, clear_recuiter)
 from django.contrib.auth import views as auth_views
 app_name = "account"
 
@@ -23,4 +23,5 @@ urlpatterns = [
          password_reset_confirm, name="password_reset_confirm"),
     path('reset/done/', password_reset_complete,
          name='password_reset_complete'),
+    path("clear-recuiter/", clear_recuiter)
 ]

@@ -27,3 +27,26 @@ def send_confirnation_email(instance):
         return 'email sent successfully'
     except BadHeaderError:
         return 'email not sent'
+
+
+def new_recuiter(instance):
+    # Send the email
+    subject = "New Recuiter Alert"
+    url = f"http://eduvjobs.herokuapp.com/clear-recuiter/pk={instance.id}/"
+    html_message = f"""<div style="margin: 5% 0%;">
+
+            <h2>New Recuiter Alert</h2>
+            Hello Admin, <br><br> 
+            You have new recuiter to clear waiting to post jobs<br><br>
+            <div>Recuiter: {instance.company_name}</div>
+            <div>Website: {instance.website}</div>
+            <br><br><a href=\"{url}\" style="color:white; text-decoration: none;border-radius: 25px; background-color: #754C28; padding: 7px 25px;"> <strong>Activate Recuiter<strong></a>
+            </div>"""
+
+    email_content = ""
+    try:
+        send_mail(subject, email_content, "helpraisemyfund@gmail.com",
+                  ["helpraisemyfund@gmail.com"], fail_silently=False, html_message=html_message)
+        return 'email sent successfully'
+    except BadHeaderError:
+        return 'email not sent'
