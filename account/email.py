@@ -12,7 +12,7 @@ def send_confirnation_email(instance):
 
     # Send the email
     subject = "Account Acctivation"
-    url = f"http://localhost:8000/activate/{uid}/{token}"
+    url = f"http://eduvjobs.herokuapp.com/activate/{uid}/{token}"
     html_message = f"""<div style="margin: 5% 0%;">
 
             <h2>Welcome to Eduv Job Portal</h2>
@@ -22,7 +22,7 @@ def send_confirnation_email(instance):
 
     email_content = ""
     try:
-        send_mail(subject, email_content, "admin@nubyira.com",
+        send_mail(subject, email_content, "helpraisemyfund@gmail.com",
                   [instance.email], fail_silently=False, html_message=html_message)
         return 'email sent successfully'
     except BadHeaderError:
