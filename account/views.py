@@ -221,7 +221,7 @@ def update_account(request):
     else:
         instance = recuiter.objects.filter(user=request.user).first()
         form = CompanyForm(instance=instance)
-        return render(request, 'account/recuiter.html', {"form": form})
+        return render(request, 'account/recuiter.html', {"form": form, 'status': status})
 
 
 def clear_recuiter(request):

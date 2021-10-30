@@ -42,7 +42,7 @@
                                 <ul>
                                     <li>{{posted_by.company_name}}</li>
                                     <li><i class="fas fa-map-marker-alt"></i>{{posted_by.current_location}}</li>
-                                    <li>{{the_job.salary_range}}</li>
+                                    <li>${{the_job.salary_range}}</li>
                                 </ul>
                             </div>
                         </div>
@@ -108,7 +108,7 @@
                           <li>Location : <span>{{posted_by.current_location}}</span></li>
                           <li>Vacancy : <span>{{the_job.slot_available}}</span></li>
                           <li>Job nature : <span>{{the_job.job_nature}}</span></li>
-                          <li>Salary :  <span>{{the_job.salary_range}} yearly</span></li>
+                          <li>Salary :  <span>${{the_job.salary_range}} Mothly</span></li>
                           <li>Application date : <span>{{the_job.application_deadline}}</span></li>
                       </ul>
                      <div class="apply-btn2">
