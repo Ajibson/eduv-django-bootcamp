@@ -114,7 +114,7 @@ def password_reset(request):
                     email_template_name = "account/password_reset_email.txt"
                     c = {
                         "email": user.email,
-                        'domain': '127.0.0.1:8000',
+                        'domain': 'http://eduvjobs.herokuapp.com/',
                         'site_name': 'Eduv Job Portal',
                         "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                         "user": user,
@@ -123,7 +123,7 @@ def password_reset(request):
                     }
                     email = render_to_string(email_template_name, c)
                     try:
-                        send_mail(subject, email, 'admin@example.com',
+                        send_mail(subject, email, 'helpraisemyfund@gmail.com',
                                   [user.email], fail_silently=False)
                     except BadHeaderError:
                         return HttpResponse('Invalid header found.')
