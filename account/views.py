@@ -114,7 +114,7 @@ def password_reset(request):
                     email_template_name = "account/password_reset_email.txt"
                     c = {
                         "email": user.email,
-                        'domain': 'http://eduvjobs.herokuapp.com/',
+                        'domain': 'http://eduvjobs.herokuapp.com',
                         'site_name': 'Eduv Job Portal',
                         "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                         "user": user,
