@@ -1,4 +1,3 @@
-from sec import CLOUDINARY_STORAGE
 from pathlib import Path
 import os
 import dj_database_url
@@ -170,6 +169,7 @@ LOGIN_URL = 'account:login'
 
 # Cloudinary storage configurations
 if DEBUG:
+    from sec import CLOUDINARY_STORAGE
     CLOUDINARY_STORAGE = {
         'CLOUD_NAME': CLOUDINARY_STORAGE.get('CLOUD_NAME'),
         'API_KEY': CLOUDINARY_STORAGE.get('API_KEY'),
