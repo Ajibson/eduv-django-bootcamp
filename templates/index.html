@@ -33,7 +33,7 @@
                     <!-- Search Box -->
                     <div class="row">
                         <div class="col-xl-8">
-                                {% id user.is_authenticated %}
+                                {% if user.is_authenticated %}
                                 <a href="{% url 'jobs:jobs-listing'%}" class="btn col-xl-8">Explore Jobs</a>
                                 {% else %}
                                 <a href="{% url 'account:signup'%}" class="btn col-xl-8">Start Here For Free</a>
