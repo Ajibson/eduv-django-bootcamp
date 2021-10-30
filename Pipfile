@@ -12,6 +12,10 @@ psycopg2-binary = "*"
 whitenoise = "*"
 cloudinary = "*"
 dj-database-url = "*"
+django-resized = "*"
+django-taggit = "*"
+django-ckeditor = "*"
+django-hitcount = "*"
 
 [dev-packages]
 

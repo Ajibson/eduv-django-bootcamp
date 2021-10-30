@@ -50,7 +50,7 @@ class Job(models.Model):
         blank=True, help_text='End each input with comma e.g 3 or more years of professional design experience,Direct response email experience')
     date_created = models.DateTimeField(default=timezone.now)
     job_slug = models.SlugField(blank=True, null=True)
-    confirmed = models.BooleanField(null=True)
+    confirmed = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title

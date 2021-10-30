@@ -305,7 +305,7 @@
                         <img src="{% static 'assets/img/service/support-img.jpg'%}" alt="">
                         <div class="support-img-cap text-center">
                             <p>Since</p>
-                            <span>1994</span>
+                            <span>2012</span>
                         </div>
                     </div>
                 </div>
@@ -326,44 +326,27 @@
                 </div>
             </div>
             <div class="row">
+                {% for blog in new_blogs %}
                 <div class="col-xl-6 col-lg-6 col-md-6">
                     <div class="home-blog-single mb-30">
                         <div class="blog-img-cap">
                             <div class="blog-img">
-                                <img src="{% static 'assets/img/blog/home-blog1.jpg'%}" alt="">
+                                <img src="{{blog.image.url}}" alt="">
                                 <!-- Blog date -->
                                 <div class="blog-date text-center">
-                                    <span>24</span>
-                                    <p>Now</p>
+                                    <span>{{blog.date_published|date:"d"}}</span>
+                                    <p>{{blog.date_published|date:"M"}}</p>
                                 </div>
                             </div>
                             <div class="blog-cap">
-                                <p>|   Properties</p>
-                                <h3><a href="{% url 'blog:single_blog' %}">Footprints in Time is perfect House in Kurashiki</a></h3>
-                                <a href="#" class="more-btn">Read more »</a>
+                                <p>|   {{blog.category}}</p>
+                                <h3><a href="{% url 'blog:single_blog' blog.slug %}">{{blog.title}}</a></h3>
+                                <a href="{% url 'blog:single_blog' blog.slug %}" class="more-btn">Read more »</a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-6 col-lg-6 col-md-6">
-                    <div class="home-blog-single mb-30">
-                        <div class="blog-img-cap">
-                            <div class="blog-img">
-                                <img src="{% static 'assets/img/blog/home-blog2.jpg'%}" alt="">
-                                <!-- Blog date -->
-                                <div class="blog-date text-center">
-                                    <span>24</span>
-                                    <p>Now</p>
-                                </div>
-                            </div>
-                            <div class="blog-cap">
-                                <p>|   Properties</p>
-                                <h3><a href="{% url 'blog:single_blog' %}">Footprints in Time is perfect House in Kurashiki</a></h3>
-                                <a href="#" class="more-btn">Read more »</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+               {% endfor %}
             </div>
         </div>
     </div>

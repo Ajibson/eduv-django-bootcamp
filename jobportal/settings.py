@@ -1,16 +1,16 @@
+from sec import CLOUDINARY_STORAGE
 from pathlib import Path
 import os
 import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 #
-SECRET_KEY = SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -27,14 +27,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cloudinary_storage',
-    'cloudinary',
     'django.contrib.humanize',
 
     # local apps
     "job",
     "blog",
-    "account"
+    "account",
+
+    # Third party app
+    'cloudinary_storage',
+    'cloudinary',
+    'ckeditor',
+    'taggit',
+    'hitcount',
 ]
 
 MIDDLEWARE = [
@@ -136,7 +141,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "account.Account"
 
+# CKEditor Settings
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_IMAGE_BACKEND = "pillow"
+CKEDITOR_CONFIGS = {
+    'default':
+        {'toolbar': 'full',
+         'width': 'auto',
+         'extraPlugins': ','.join([
+             'codesnippet',
+             'youtube'
+         ]),
+         },
+}
 
+# Email configurations
 EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
 EMAIL_HOST = os.environ.get('EMAIL_HOST')
 EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND')
@@ -148,9 +167,18 @@ DEFAULT_FROM_MAIL = os.environ.get('EMAIL_HOST_USER')
 
 LOGIN_URL = 'account:login'
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
-    'API_KEY': os.environ.get('API_KEY'),
-    'API_SECRET': os.environ.get('API_SECRET'),
-}
+
+# Cloudinary storage configurations
+if DEBUG:
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': CLOUDINARY_STORAGE.get('CLOUD_NAME'),
+        'API_KEY': CLOUDINARY_STORAGE.get('API_KEY'),
+        'API_SECRET': CLOUDINARY_STORAGE.get('API_SECRET'),
+    }
+else:
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
+        'API_KEY': os.environ.get('API_KEY'),
+        'API_SECRET': os.environ.get('API_SECRET'),
+    }
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'

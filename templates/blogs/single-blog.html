@@ -6,19 +6,19 @@
 
 {% block content %}
 
- <div class="slider-area ">
+ <!-- <div class="slider-area ">
    <div class="single-slider section-overly slider-height2 d-flex align-items-center" data-background="{% static 'assets/img/hero/about.jpg'%}">
        <div class="container">
            <div class="row">
                <div class="col-xl-12">
                    <div class="hero-cap text-center">
-                       <h2>Blog Details</h2>
+                       <h2>{{blog.title}}</h2>
                    </div>
                </div>
            </div>
        </div>
    </div>
-</div>
+</div> -->
 <!-- Hero Area End -->
 <!--================Blog Area =================-->
 <section class="blog_area single-post-area section-padding">
@@ -27,52 +27,29 @@
          <div class="col-lg-8 posts-list">
             <div class="single-post">
                <div class="feature-img">
-                  <img class="img-fluid" src="{% static 'assets/img/blog/single_blog_1.png'%}" alt="">
+                  <img class="img-fluid" src="{{blog.image.url}}" alt="">
                </div>
                <div class="blog_details">
-                  <h2>Second divided from form fish beast made every of seas
-                     all gathered us saying he our
+                  <h2>{{blog.title}}
                   </h2>
                   <ul class="blog-info-link mt-3 mb-4">
-                     <li><a href="#"><i class="fa fa-user"></i> Travel, Lifestyle</a></li>
+                     {% for tag in blog.tags.all %}
+                        <li>{{tag}}</li>
+                     {% endfor %}
                      <li><a href="#"><i class="fa fa-comments"></i> 03 Comments</a></li>
                   </ul>
-                  <p class="excert">
-                     MCSE boot camps have its supporters and its detractors. Some people do not understand why you
-                     should have to spend money on boot camp when you can get the MCSE study materials yourself at a
-                     fraction of the camp price. However, who has the willpower
-                  </p>
-                  <p>
-                     MCSE boot camps have its supporters and its detractors. Some people do not understand why you
-                     should have to spend money on boot camp when you can get the MCSE study materials yourself at a
-                     fraction of the camp price. However, who has the willpower to actually sit through a
-                     self-imposed MCSE training. who has the willpower to actually
-                  </p>
-                  <div class="quote-wrapper">
-                     <div class="quotes">
-                        MCSE boot camps have its supporters and its detractors. Some people do not understand why you
-                        should have to spend money on boot camp when you can get the MCSE study materials yourself at
-                        a fraction of the camp price. However, who has the willpower to actually sit through a
-                        self-imposed MCSE training.
-                     </div>
-                  </div>
-                  <p>
-                     MCSE boot camps have its supporters and its detractors. Some people do not understand why you
-                     should have to spend money on boot camp when you can get the MCSE study materials yourself at a
-                     fraction of the camp price. However, who has the willpower
-                  </p>
-                  <p>
-                     MCSE boot camps have its supporters and its detractors. Some people do not understand why you
-                     should have to spend money on boot camp when you can get the MCSE study materials yourself at a
-                     fraction of the camp price. However, who has the willpower to actually sit through a
-                     self-imposed MCSE training. who has the willpower to actually
-                  </p>
+                  
+                     {{blog.content|safe}}
+                  
+                  
+                  
+               
                </div>
             </div>
             <div class="navigation-top">
                <div class="d-sm-flex justify-content-between text-center">
-                  <p class="like-info"><span class="align-middle"><i class="fa fa-heart"></i></span> Lily and 4
-                     people like this</p>
+                  <!-- <p class="like-info"><span class="align-middle"><i class="fa fa-heart"></i></span> Lily and 4
+                     people like this</p> -->
                   <div class="col-sm-4 text-center my-2 my-sm-0">
                      <!-- <p class="comment-count"><span class="align-middle"><i class="fa fa-comment"></i></span> 06 Comments</p> -->
                   </div>
@@ -85,34 +62,42 @@
                </div>
                <div class="navigation-area">
                   <div class="row">
+                     
                      <div
                         class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
-                        <div class="thumb">
+                        <!-- <div class="thumb">
                            <a href="#">
-                              <img class="img-fluid" src="{% static 'assets/img/post/preview.png'%}" alt="">
+                              <img class="img-fluid" src="{% static 'assets/img/post/next.png'%}" alt="">
                            </a>
-                        </div>
-                        <div class="arrow">
+                        </div> -->
+                        <!-- <div class="arrow">
                            <a href="#">
                               <span class="lnr text-white ti-arrow-left"></span>
                            </a>
-                        </div>
+                        </div> -->
+                        {% if prev_blog != "None" %}
                         <div class="detials">
+                           
                            <p>Prev Post</p>
-                           <a href="#">
-                              <h4>Space The Final Frontier</h4>
+                           <a href="{% url 'blog:single_blog' prev_blog.slug %}" >
+                              <h4>{{prev_blog.title}}</h4>
                            </a>
                         </div>
+                     {% endif %}
                      </div>
+                     
+                     
                      <div
                         class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
+                        {% if next_blog != "None" %}
                         <div class="detials">
                            <p>Next Post</p>
-                           <a href="#">
-                              <h4>Telescopes 101</h4>
+                           <a href="{% url 'blog:single_blog' next_blog.slug %}">
+                              <h4>{{next_blog.title}}</h4>
                            </a>
                         </div>
-                        <div class="arrow">
+                        {% endif %}
+                        <!-- <div class="arrow">
                            <a href="#">
                               <span class="lnr text-white ti-arrow-right"></span>
                            </a>
@@ -121,105 +106,45 @@
                            <a href="#">
                               <img class="img-fluid" src="{% static 'assets/img/post/next.png'%}" alt="">
                            </a>
-                        </div>
+                        </div> -->
                      </div>
+                     
                   </div>
                </div>
             </div>
             <div class="blog-author">
                <div class="media align-items-center">
-                  <img src="{% static 'assets/img/blog/author.png'%}" alt="">
+                  <img src="{{blog.author.image.url}}" alt="">
                   <div class="media-body">
                      <a href="#">
-                        <h4>Harvard milan</h4>
+                        <h4>{{blog.author.name}}</h4>
                      </a>
-                     <p>Second divided from form fish beast made. Every of seas all gathered use saying you're, he
-                        our dominion twon Second divided from</p>
+                     <p>{{blog.author.short_bio}}</p>
                   </div>
                </div>
             </div>
             <div class="comments-area">
-               <h4>05 Comments</h4>
-               <div class="comment-list">
-                  <div class="single-comment justify-content-between d-flex">
-                     <div class="user justify-content-between d-flex">
-                        <div class="thumb">
-                           <img src="{% static 'assets/img/comment/comment_1.png'%}" alt="">
-                        </div>
-                        <div class="desc">
-                           <p class="comment">
-                              Multiply sea night grass fourth day sea lesser rule open subdue female fill which them
-                              Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser
-                           </p>
-                           <div class="d-flex justify-content-between">
-                              <div class="d-flex align-items-center">
-                                 <h5>
-                                    <a href="#">Emilly Blunt</a>
-                                 </h5>
-                                 <p class="date">December 4, 2017 at 3:12 pm </p>
-                              </div>
-                              <div class="reply-btn">
-                                 <a href="#" class="btn-reply text-uppercase">reply</a>
-                              </div>
+               <div id="disqus_thread"></div>
+               <script>
+                  /**
+                  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+                  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+                  /*
+                  var disqus_config = function () {
+                  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                  };
+                  */
+                  (function() { // DON'T EDIT BELOW THIS LINE
+                  var d = document, s = d.createElement('script');
+                  s.src = 'https://eduvjobs-herokuapp-com.disqus.com/embed.js';
+                  s.setAttribute('data-timestamp', +new Date());
+                  (d.head || d.body).appendChild(s);
+                  })();
+               </script>
+               <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
                            </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="comment-list">
-                  <div class="single-comment justify-content-between d-flex">
-                     <div class="user justify-content-between d-flex">
-                        <div class="thumb">
-                           <img src="{% static 'assets/img/comment/comment_2.png'%}" alt="">
-                        </div>
-                        <div class="desc">
-                           <p class="comment">
-                              Multiply sea night grass fourth day sea lesser rule open subdue female fill which them
-                              Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser
-                           </p>
-                           <div class="d-flex justify-content-between">
-                              <div class="d-flex align-items-center">
-                                 <h5>
-                                    <a href="#">Emilly Blunt</a>
-                                 </h5>
-                                 <p class="date">December 4, 2017 at 3:12 pm </p>
-                              </div>
-                              <div class="reply-btn">
-                                 <a href="#" class="btn-reply text-uppercase">reply</a>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="comment-list">
-                  <div class="single-comment justify-content-between d-flex">
-                     <div class="user justify-content-between d-flex">
-                        <div class="thumb">
-                           <img src="{% static 'assets/img/comment/comment_3.png'%}" alt="">
-                        </div>
-                        <div class="desc">
-                           <p class="comment">
-                              Multiply sea night grass fourth day sea lesser rule open subdue female fill which them
-                              Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser
-                           </p>
-                           <div class="d-flex justify-content-between">
-                              <div class="d-flex align-items-center">
-                                 <h5>
-                                    <a href="#">Emilly Blunt</a>
-                                 </h5>
-                                 <p class="date">December 4, 2017 at 3:12 pm </p>
-                              </div>
-                              <div class="reply-btn">
-                                 <a href="#" class="btn-reply text-uppercase">reply</a>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <div class="comment-form">
+                           <!-- <div class="comment-form">
                <h4>Leave a Reply</h4>
                <form class="form-contact comment_form" action="#" id="commentForm">
                   <div class="row">
@@ -249,169 +174,49 @@
                      <button type="submit" class="button button-contactForm btn_1 boxed-btn">Send Message</button>
                   </div>
                </form>
-            </div>
+            </div> -->
          </div>
-         <div class="col-lg-4">
+         <div class="col-lg-4 ">
             <div class="blog_right_sidebar">
-               <aside class="single_sidebar_widget search_widget">
-                  <form action="#">
-                     <div class="form-group">
-                        <div class="input-group mb-3">
-                           <input type="text" class="form-control" placeholder='Search Keyword'
-                              onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Keyword'">
-                           <div class="input-group-append">
-                              <button class="btns" type="button"><i class="ti-search"></i></button>
-                           </div>
-                        </div>
-                     </div>
-                     <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
-                        type="submit">Search</button>
-                  </form>
-               </aside>
+              
                <aside class="single_sidebar_widget post_category_widget">
                   <h4 class="widget_title">Category</h4>
                   <ul class="list cat-list">
-                     <li>
-                        <a href="#" class="d-flex">
-                           <p>Resaurant food</p>
-                           <p>(37)</p>
-                        </a>
-                     </li>
-                     <li>
-                        <a href="#" class="d-flex">
-                           <p>Travel news</p>
-                           <p>(10)</p>
-                        </a>
-                     </li>
-                     <li>
-                        <a href="#" class="d-flex">
-                           <p>Modern technology</p>
-                           <p>(03)</p>
-                        </a>
-                     </li>
-                     <li>
-                        <a href="#" class="d-flex">
-                           <p>Product</p>
-                           <p>(11)</p>
-                        </a>
-                     </li>
-                     <li>
-                        <a href="#" class="d-flex">
-                           <p>Inspiration</p>
-                           <p>(21)</p>
-                        </a>
-                     </li>
-                     <li>
-                        <a href="#" class="d-flex">
-                           <p>Health Care</p>
-                           <p>(21)</p>
-                        </a>
-                     </li>
+                     {% for category,blogs in cat_dict.items %}
+                            <li>
+                                <a href="#" class="d-flex">
+                                    <p> {{category.name}}</p>
+                                    <p> &nbsp; ({{blogs}})</p>
+                                </a>
+                            </li>
+                     {% endfor %}
                   </ul>
                </aside>
                <aside class="single_sidebar_widget popular_post_widget">
                   <h3 class="widget_title">Recent Post</h3>
-                  <div class="media post_item">
-                     <img src="{% static 'assets/img/post/post_1.png'%}" alt="post">
-                     <div class="media-body">
-                        <a href="single-blog.html">
-                           <h3>From life was you fish...</h3>
-                        </a>
-                        <p>January 12, 2019</p>
-                     </div>
-                  </div>
-                  <div class="media post_item">
-                     <img src="{% static 'assets/img/post/post_2.png'%}" alt="post">
-                     <div class="media-body">
-                        <a href="single-blog.html">
-                           <h3>The Amazing Hubble</h3>
-                        </a>
-                        <p>02 Hours ago</p>
-                     </div>
-                  </div>
-                  <div class="media post_item">
-                     <img src="{% static 'assets/img/post/post_3.png'%}" alt="post">
-                     <div class="media-body">
-                        <a href="single-blog.html">
-                           <h3>Astronomy Or Astrology</h3>
-                        </a>
-                        <p>03 Hours ago</p>
-                     </div>
-                  </div>
-                  <div class="media post_item">
-                     <img src="{% static 'assets/img/post/post_4.png'%}" alt="post">
-                     <div class="media-body">
-                        <a href="single-blog.html">
-                           <h3>Asteroids telescope</h3>
-                        </a>
-                        <p>01 Hours ago</p>
-                     </div>
-                  </div>
+                  {% for blog in recent_blogs %}
+                        <div class="media post_item">
+                            <img src="{{blog.image.url}}" class="col-5" alt="post">
+                            <div class="media-body">
+                                <a href="{% url 'blog:single_blog' blog.slug %}">
+                                    <h3>{{blog.title}}</h3>
+                                </a>
+                                <p>{{blog.date_published|date:"M d,Y"}}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
                </aside>
                <aside class="single_sidebar_widget tag_cloud_widget">
-                  <h4 class="widget_title">Tag Clouds</h4>
+                  <h4 class="widget_title">Blog Tags</h4>
                   <ul class="list">
-                     <li>
-                        <a href="#">project</a>
-                     </li>
-                     <li>
-                        <a href="#">love</a>
-                     </li>
-                     <li>
-                        <a href="#">technology</a>
-                     </li>
-                     <li>
-                        <a href="#">travel</a>
-                     </li>
-                     <li>
-                        <a href="#">restaurant</a>
-                     </li>
-                     <li>
-                        <a href="#">life style</a>
-                     </li>
-                     <li>
-                        <a href="#">design</a>
-                     </li>
-                     <li>
-                        <a href="#">illustration</a>
-                     </li>
+                     {% for tag in tags %}
+                            <li>
+                                <a href="#">{{tag}}</a>
+                            </li>
+                            {% endfor %}
                   </ul>
                </aside>
-               <aside class="single_sidebar_widget instagram_feeds">
-                  <h4 class="widget_title">Instagram Feeds</h4>
-                  <ul class="instagram_row flex-wrap">
-                     <li>
-                        <a href="#">
-                           <img class="img-fluid" src="{% static 'assets/img/post/post_5.png'%}" alt="">
-                        </a>
-                     </li>
-                     <li>
-                        <a href="#">
-                           <img class="img-fluid" src="{% static 'assets/img/post/post_6.png'%}" alt="">
-                        </a>
-                     </li>
-                     <li>
-                        <a href="#">
-                           <img class="img-fluid" src="{% static 'assets/img/post/post_7.png'%}" alt="">
-                        </a>
-                     </li>
-                     <li>
-                        <a href="#">
-                           <img class="img-fluid" src="{% static 'assets/img/post/post_8.png'%}" alt="">
-                        </a>
-                     </li>
-                     <li>
-                        <a href="#">
-                           <img class="img-fluid" src="{% static 'assets/img/post/post_9.png'%}" alt="">
-                        </a>
-                     </li>
-                     <li>
-                        <a href="#">
-                           <img class="img-fluid" src="{% static 'assets/img/post/post_10.png'%}" alt="">
-                        </a>
-                     </li>
-                  </ul>
-               </aside>
+              
                <aside class="single_sidebar_widget newsletter_widget">
                   <h4 class="widget_title">Newsletter</h4>
                   <form action="#">
@@ -430,5 +235,5 @@
 </section>
 <!--================ Blog Area end =================-->
 
-
+<script id="dsq-count-scr" src="//eduvjobs-herokuapp-com.disqus.com/count.js" async></script>
 {% endblock content %}

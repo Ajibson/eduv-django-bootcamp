@@ -18,7 +18,7 @@ from django.http import HttpResponse
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from .email import new_recuiter
-
+from blog.models import blogs
 
 from job.models import Category, Job
 
@@ -26,6 +26,8 @@ from job.models import Category, Job
 def index(request):
     categories = Category.objects.all()
     cat_dict = {}
+    new_blogs = blogs.objects.filter(
+        status="Published").order_by("-date_published")
     for category in categories:
         job_categories = Job.objects.filter(category=category.name)
         cat_dict[category] = len(job_categories)
@@ -33,7 +35,7 @@ def index(request):
     job_seekers = len(job_seeker.objects.all())
     recuiters = len(recuiter.objects.all())
     context = {
-        'cat_dict': cat_dict, "hot_jobs": hot_jobs, "job_seekers": job_seekers, "recuiters": recuiters
+        'cat_dict': cat_dict, "hot_jobs": hot_jobs, "job_seekers": job_seekers, "recuiters": recuiters, "new_blogs": new_blogs[:3]
     }
     return render(request, "index.html", context)
 
