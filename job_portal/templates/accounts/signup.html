@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<!--================Signup Area =================-->
+<section>
+    <div class="container ">
+
+        <form action="" method="POST" class="my-4 border rounded col-md-10 mx-md-auto">
+            {% csrf_token %}
+            <h2 class="col-12 my-3">Create Account</h2>
+            <div class="row  mx-md-auto ">
+                {% if forms.error %}
+                <div class="alert alert-danger col-12 text-center" role="alert">
+                    {% for error in form.confirm_password.errors%}
+                    {{error}}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% for field in form %}
+                <div class="form-group col-md-6">
+                    <label for="first_name" class="form-label">{{field.label}}</label>
+                    {{field}}
+                </div>
+                {% endfor %}
+                <input type="password" value="Sign Up" class="btn btn-primary col-md-6 mx-md-auto">
+
+                <button type="submit" class="form-control btn mb-3 rounded mx-3">Submit</button>
+                <a class="text-left mb-3 text-info col-12" href="/login.html">Registered User?Login</a>
+            </div>
+        </form>
+
+
+    </div>
+</section>
+<!--================Signup Area =================-->
+
+{% endblock content %}

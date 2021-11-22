@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% load static%}
+{% block content %}
+
+<!-- Hero Area Start-->
+<div class="slider-area ">
+    <div class="single-slider section-overly slider-height2 d-flex align-items-center"
+        data-background="{% static 'assets/img/hero/about.jpg'%}">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="hero-cap text-center">
+                        <h2>Explore Jobs</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Hero Area End -->
+<!--================Signup Area =================-->
+<section>
+    <div class="container ">
+
+        <form action="" method="POST" class="my-4 border rounded col-md-6 mx-md-auto">
+            {% csrf_token %}
+            <h2 class="col-12 my-3">Login Account</h2>
+            <div class="row  mx-md-auto ">
+                {% if msg %}
+                <div class="alert alert-danger col-12 text-center" role="alert">
+                    {{msg}}
+                </div>
+                {% endif %}
+                {% for field in form %}
+                <div class="form-group col-12">
+                    <label for="first_name" class="form-label">{{field.label}}</label>
+                    {{field}}
+                </div>
+                {% endfor %}
+                <a class="text-right mb-3 text-info col-12" href="/password_reset.html">Forget Password?</a>
+
+                <button type="submit" class="form-control btn mb-3 rounded mx-3">Login</button>
+                <a class="text-left mb-3 text-info col-12" href="/signup.html">New User?Register</a>
+        </form>
+
+
+    </div>
+</section>
+<!--================Signup Area =================-->
+
+{% endblock content %}
