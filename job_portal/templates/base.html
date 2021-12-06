@@ -46,7 +46,11 @@
                                     <nav class="d-none d-lg-block">
                                         <ul id="navigation">
                                             <li><a href="{% url 'index' %}">Home</a></li>
+                                            {% if user.is_authenticated and request.user.status == "recuiter" %}
+                                            <li><a href="job_listing.html">Post a Job</a></li>
+                                            {% else %}
                                             <li><a href="job_listing.html">Find a Jobs </a></li>
+                                            {% endif %}
                                             <li><a href="about.html">About</a></li>
                                             <li><a href="blog.html">Blog</a></li>
                                             <li><a href="contact.html">Contact</a></li>
@@ -55,8 +59,12 @@
                                 </div>
                                 <!-- Header-btn -->
                                 <div class="header-btn d-none f-right d-lg-block">
+                                    {% if not user.is_authenticated %}
                                     <a href="{% url 'account:signup' %}" class="btn head-btn1">Register</a>
                                     <a href="{% url 'account:login'%}" class="btn head-btn2">Login</a>
+                                    {% else %}
+                                    <a href="{% url 'account:logout'%}" class="btn head-btn2">Logout</a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

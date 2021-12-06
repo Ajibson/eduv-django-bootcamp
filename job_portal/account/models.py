@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import FileExtensionValidator
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
 
 
 class User(AbstractUser):
@@ -47,6 +48,7 @@ class job_seeker(models.Model):
 
 
 class recruiter(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     website = models.URLField(blank=True)
     company_name = models.CharField(max_length=250, blank=True)
     company_logo = models.ImageField(upload_to="company_logo", blank=True)
@@ -61,3 +63,12 @@ def create_job_seeker_recruiter(sender, instance, created, **kwargs):
             job_seeker.objects.create(user=instance)
         elif instance.status == "recuiter":
             recruiter.objects.create(user=instance)
+
+
+class confirmation_email(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    token = models.CharField(max_length=200)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.token

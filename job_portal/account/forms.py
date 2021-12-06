@@ -48,6 +48,7 @@ class SignUpForm(forms.ModelForm):
         return password
 
 
+
 class LoginForm(forms.Form):
     email = forms.EmailField(required=True)
     password = forms.CharField(widget=forms.PasswordInput, required=True)

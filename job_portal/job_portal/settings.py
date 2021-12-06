@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'django.contrib.humanize',
     # local apps
     "account",
     'jobs',
@@ -113,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Lagos'
 
 USE_I18N = True
 
@@ -136,3 +136,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = "account.User"
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_HOST_USER = "azeezaremu123@gmail.com"
+EMAIL_HOST_PASSWORD = "bpvrhborzjgcotyk"
+EMAIL_PORT = 587
+DEFAULT_FROM_MAIL = "azeezaremu123@gmail.com"
+
+LOGIN_URL = "account:login"
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / "media/"

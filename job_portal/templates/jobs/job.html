@@ -1,0 +1,118 @@
+{% extends 'base.html'%}
+
+{% load static %}
+{% block content %}
+
+<div class="slider-area ">
+    <div class="single-slider section-overly slider-height2 d-flex align-items-center"
+        data-background="{% static 'assets/img/hero/about.jpg'%}">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="hero-cap text-center">
+                        <h2>Post a job!!!</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Hero Area End -->
+<!--================Signup Area =================-->
+<section>
+    <div class="container ">
+
+        <form action="" method="POST" class="my-4 border rounded col-md-10 mx-md-auto">
+            {% csrf_token %}
+            <h2 class="col-12 my-3">Job Creation Form</h2>
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-danger col-12 text-center text-black" role="alert">
+                {{message}}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% if form.errors %}
+            <div class="alert alert-danger col-12 text-center" role="alert">
+                {% for field,error in form.errors.items%}
+                {{field}}{{error}}
+                {% endfor %}
+            </div>
+            {% endif %}
+            <div class="row  mx-md-auto ">
+                <div class="form-group col-md-6">
+                    <label for="first_name" class="form-label">Title</label>
+                    <input type="text" class="form-control" name="title">
+                </div>
+                <div class="form-group col-md-6 ">
+                    <label for="last_name" class="form-label">Job Category</label>
+                    <select class="form-control" onchange="showinput()" id="category_select" name="category">
+
+                        {% for category in categories%}
+                        <option value="{{category.pk}}">{{category}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+
+
+                <div class="form-group col-md-6">
+                    <label for="full_name" class="form-label">Job Nature</label>
+                    <select class="form-control" name="job_nature">
+                        <option>Part Time</option>
+                        <option>Full Time</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="last_name" class="form-label">Application URL</label>
+                    <input type="text" class="form-control" name="appliction_url">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="first_name" class="form-label">Application Email</label>
+                    <input type="text" class="form-control" name="application_email">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="first_name" class="form-label">Salary Range</label>
+                    <input type="text" class="form-control" name="salary">
+                    <small>$500 - $900</small>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="first_name" class="form-label">Job Location</label>
+                    <input type="text" class="form-control" name="location">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="first_name" class="form-label">Application deadline</label>
+                    <input type="text" class="form-control" name="application_deadline">
+                </div>
+                <div class="form-group col-md-6" id="slot">
+                    <label for="full_name" class="form-label">Slot</label>
+                    <input type="text" class="form-control" name="slots">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="first_name" class="form-label">Job Description</label>
+                    <textarea name="description" id="" cols="30" rows="5" class="form-control"></textarea>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="first_name" class="form-label">Required Knowledge, Skills, and Abilities</label>
+                    <textarea name="requirements" id="" cols="30" rows="5" class="form-control"></textarea>
+                    <small>End each input with comma e.g System Software Development,Strong problem solving and
+                        debugging skills</small>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="first_name" class="form-label">Education + Experience</label>
+                    <textarea name="education_experience" id="" cols="30" rows="5" class="form-control"></textarea>
+                    <small>End each input with comma e.g 3 or more years of professional design experience,Direct
+                        response email experience</small>
+                </div>
+
+
+                <button type="submit" class="form-control btn mb-3 rounded mx-3">Submit</button>
+                <a class="text-left mb-3 text-info col-12" href="/login.html">Registered User?Login</a>
+            </div>
+        </form>
+
+
+    </div>
+</section>
+
+{% endblock content %}

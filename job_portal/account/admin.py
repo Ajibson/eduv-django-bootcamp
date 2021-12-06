@@ -1,6 +1,6 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
-from .models import User, job_seeker, recruiter
+from .models import User, job_seeker, recruiter, confirmation_email
 
 
 # admin.site.register(User)
@@ -20,7 +20,8 @@ class UserAdmin(admin.ModelAdmin):
     list_filter = ["is_verified"]
     search_fields = ["email"]
     fields = ["email", "password", "is_verified",
-              "first_name", "last_name", "status"]
+              "first_name", "last_name", "status", 'last_login']
 
 
 # admin.site.register(recruiter, recruiterAdmin)
+admin.site.register(confirmation_email)

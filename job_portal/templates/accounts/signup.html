@@ -11,9 +11,16 @@
             {% csrf_token %}
             <h2 class="col-12 my-3">Create Account</h2>
             <div class="row  mx-md-auto ">
-                {% if forms.error %}
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-danger col-12 text-center text-black" role="alert">
+                    {{message}}
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% if form.errors %}
                 <div class="alert alert-danger col-12 text-center" role="alert">
-                    {% for error in form.confirm_password.errors%}
+                    {% for field,error in form.errors.items%}
                     {{error}}
                     {% endfor %}
                 </div>

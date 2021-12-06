@@ -27,17 +27,23 @@
             {% csrf_token %}
             <h2 class="col-12 my-3">Login Account</h2>
             <div class="row  mx-md-auto ">
-                {% if msg %}
-                <div class="alert alert-danger col-12 text-center" role="alert">
-                    {{msg}}
+
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-danger col-12 text-center text-black" role="alert">
+                    {{message}}
                 </div>
+                {% endfor %}
                 {% endif %}
                 {% for field in form %}
                 <div class="form-group col-12">
                     <label for="first_name" class="form-label">{{field.label}}</label>
                     {{field}}
+
                 </div>
                 {% endfor %}
+
+
                 <a class="text-right mb-3 text-info col-12" href="/password_reset.html">Forget Password?</a>
 
                 <button type="submit" class="form-control btn mb-3 rounded mx-3">Login</button>
