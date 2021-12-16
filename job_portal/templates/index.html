@@ -126,94 +126,19 @@
                 </div>
             </div>
             <div class="row d-flex justify-contnet-center">
+                {% for cat,job in cat_dict.items %}
                 <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
                     <div class="single-services text-center mb-30">
                         <div class="services-ion">
                             <span class="flaticon-tour"></span>
                         </div>
                         <div class="services-cap">
-                            <h5><a href="job_listing.html">Design & Creative</a></h5>
-                            <span>(653)</span>
+                            <h5><a href="job_listing.html">{{cat.name}}</a></h5>
+                            <span>({{job}})</span>
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                    <div class="single-services text-center mb-30">
-                        <div class="services-ion">
-                            <span class="flaticon-cms"></span>
-                        </div>
-                        <div class="services-cap">
-                            <h5><a href="job_listing.html">Design & Development</a></h5>
-                            <span>(658)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                    <div class="single-services text-center mb-30">
-                        <div class="services-ion">
-                            <span class="flaticon-report"></span>
-                        </div>
-                        <div class="services-cap">
-                            <h5><a href="job_listing.html">Sales & Marketing</a></h5>
-                            <span>(658)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                    <div class="single-services text-center mb-30">
-                        <div class="services-ion">
-                            <span class="flaticon-app"></span>
-                        </div>
-                        <div class="services-cap">
-                            <h5><a href="job_listing.html">Mobile Application</a></h5>
-                            <span>(658)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                    <div class="single-services text-center mb-30">
-                        <div class="services-ion">
-                            <span class="flaticon-helmet"></span>
-                        </div>
-                        <div class="services-cap">
-                            <h5><a href="job_listing.html">Construction</a></h5>
-                            <span>(658)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                    <div class="single-services text-center mb-30">
-                        <div class="services-ion">
-                            <span class="flaticon-high-tech"></span>
-                        </div>
-                        <div class="services-cap">
-                            <h5><a href="job_listing.html">Information Technology</a></h5>
-                            <span>(658)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                    <div class="single-services text-center mb-30">
-                        <div class="services-ion">
-                            <span class="flaticon-real-estate"></span>
-                        </div>
-                        <div class="services-cap">
-                            <h5><a href="job_listing.html">Real Estate</a></h5>
-                            <span>(658)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                    <div class="single-services text-center mb-30">
-                        <div class="services-ion">
-                            <span class="flaticon-content"></span>
-                        </div>
-                        <div class="services-cap">
-                            <h5><a href="job_listing.html">Content Writer</a></h5>
-                            <span>(658)</span>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
             <!-- More Btn -->
             <!-- Section Button -->
@@ -262,11 +187,11 @@
                     <div class="single-job-items mb-30">
                         <div class="job-items">
                             <div class="company-img">
-                                <a href="job_details.html"><img src="{{job.posted_by.company_logo.url}}" alt=""
-                                        style="width: 8rem;"></a>
+                                <a href="{% url 'jobs:job_details' job.posted_by.company_name job.title job.id%}"><img
+                                        src="{{job.posted_by.company_logo.url}}" alt="" style="width: 8rem;"></a>
                             </div>
                             <div class="job-tittle">
-                                <a href="job_details.html">
+                                <a href="{% url 'jobs:job_details' job.posted_by.company_name job.title job.id%}">
                                     <h4>{{job.title}}</h4>
                                 </a>
                                 <ul>
@@ -277,7 +202,8 @@
                             </div>
                         </div>
                         <div class="items-link f-right">
-                            <a href="job_details.html">{{job.job_nature}}</a>
+                            <a
+                                href="{% url 'jobs:job_details' job.posted_by.company_name job.title job.id%}">{{job.job_nature}}</a>
                             <span>{{job.date_posted | naturaltime}}</span>
                         </div>
                     </div>
@@ -367,7 +293,7 @@
                         <!-- Section Tittle -->
                         <div class="section-tittle section-tittle2">
                             <span>What we are doing</span>
-                            <h2>24k Talented people are getting Jobs</h2>
+                            <h2>{{job_seekers_num}} Talented people are getting Jobs</h2>
                         </div>
                         <div class="support-caption">
                             <p class="pera-top">Mollit anim laborum duis au dolor in voluptate velit ess cillum dolore
@@ -375,7 +301,11 @@
                             <p>Mollit anim laborum.Duis aute irufg dhjkolohr in re voluptate velit esscillumlore eu
                                 quife nrulla parihatur. Excghcepteur signjnt occa cupidatat non inulpadeserunt mollit
                                 aboru. temnthp incididbnt ut labore mollit anim laborum suis aute.</p>
-                            <a href="/job.html" class="btn post-btn">Post a job</a>
+                            {% if user.is_authenticated and request.user.status == "recuiter" %}
+                            <a href="{% url 'jobs:post_job'%}" class="btn post-btn">Post a job</a>
+                            {% else %}
+                            <a href="{% url 'jobs:job_listing'%}" class="btn post-btn">Find a job</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

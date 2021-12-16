@@ -7,12 +7,8 @@ from django.utils import timezone
 
 
 class User(AbstractUser):
-    status_choice = (
-        ("job_seeker", "Job Seeker"), ("recuiter", "recuiter")
-    )
-    gender_choice = (
-        ("Male", "Male"), ("Female", "Female")
-    )
+    status_choice = (("job_seeker", "Job Seeker"), ("recuiter", "recuiter"))
+    gender_choice = (("Male", "Male"), ("Female", "Female"))
     first_name = models.CharField(max_length=250)
     last_name = models.CharField(max_length=250)
     email = models.EmailField(unique=True)
@@ -25,7 +21,7 @@ class User(AbstractUser):
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}"
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
 
     REQUIRED_FIELDS = ["password", "username"]
 
@@ -38,8 +34,11 @@ class job_seeker(models.Model):
     phone_number = models.CharField(max_length=20, blank=True)
     title = models.CharField(max_length=250, blank=True)
     image = models.ImageField(upload_to="job_seeker_image", blank=True)
-    resume = models.FileField(upload_to="resume_file", validators=[
-                              FileExtensionValidator(allowed_extensions=['pdf'])], blank=True)
+    resume = models.FileField(
+        upload_to="resume_file",
+        validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
+        blank=True,
+    )
     current_location = models.CharField(max_length=300, blank=True)
     bio = models.TextField(blank=True)
 
